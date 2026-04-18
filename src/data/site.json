@@ -1,0 +1,10 @@
+{
+  "title": "Tyler's Corner",
+  "owner": "Tyler",
+  "email": "liximu@foxmail.com",
+  "github": "https://github.com/ShineTyler",
+  "languages": ["en", "zh-CN"],
+  "defaultLanguage": "en",
+  "tagline": "On the journey to becoming an excellent engineer",
+  "deploymentRoot": "public"
+}

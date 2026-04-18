@@ -1,0 +1,22 @@
+[
+  {
+    "id": "why-personal-site",
+    "slug": "start-here",
+    "lang": "en",
+    "title": "What this site is for as a student",
+    "date": "2026-04-01",
+    "readingTime": "7 min read",
+    "category": "notes",
+    "path": "/en/blog/start-here/"
+  },
+  {
+    "id": "why-personal-site-zh",
+    "slug": "start-here",
+    "lang": "zh-CN",
+    "title": "学生阶段为什么值得做个人网站",
+    "date": "2026-04-01",
+    "readingTime": "5 分钟阅读",
+    "category": "notes",
+    "path": "/zh/blog/start-here/"
+  }
+]

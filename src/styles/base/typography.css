@@ -1,0 +1,24 @@
+@font-face {
+  font-family: "JetBrains Mono Web";
+  src: url("../../assets/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Young Serif Web";
+  src: url("../../assets/fonts/YoungSerif-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  font-family: "Tyler Sans", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: var(--text);
+}
+
+.brand-wordmark {
+  font-family: "JetBrains Mono Web", monospace;
+}

@@ -1,0 +1,5 @@
+.site-shell,
+.article-shell {
+  width: min(calc(100% - 32px), var(--content));
+  margin: 24px auto;
+}

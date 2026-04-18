@@ -1,0 +1,16 @@
+[
+  {
+    "id": "portfolio-site",
+    "lang": "en",
+    "title": "Portfolio Site",
+    "status": "coming-soon",
+    "summary": "Reserved for the first fully documented project case study."
+  },
+  {
+    "id": "portfolio-site-zh",
+    "lang": "zh-CN",
+    "title": "作品集网站",
+    "status": "coming-soon",
+    "summary": "预留给第一个完整整理好的项目案例。"
+  }
+]

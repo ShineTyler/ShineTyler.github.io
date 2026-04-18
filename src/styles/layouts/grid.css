@@ -1,0 +1,5 @@
+.grid-two,
+.grid-three {
+  display: grid;
+  gap: 26px;
+}

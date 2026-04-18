@@ -1,0 +1,10 @@
+{
+  "name": "tyler-corner-site",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Bilingual personal homepage and blog structured with public/src/content/design-system layers.",
+  "scripts": {
+    "build": "python src/scripts/build_site.py",
+    "preview": "python -m http.server 8000 --directory public"
+  }
+}

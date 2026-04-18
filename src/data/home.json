@@ -1,0 +1,58 @@
+{
+  "hero": {
+    "title_lines": {
+      "en": ["Building,", "learning and", "growing."],
+      "zh-CN": ["Building,", "learning and", "growing."]
+    },
+    "subtitle": {
+      "en": "On the journey to becoming an excellent engineer.",
+      "zh-CN": "On the journey to becoming an excellent engineer."
+    },
+    "portrait_note": {
+      "en": "I'm Tyler, a student who learns best by building. This site is where I keep my projects, notes, and reflections while growing into an excellent engineer.",
+      "zh-CN": "我是 Tyler，一名喜欢通过动手实践来学习的学生。这个网站用来记录我的项目、笔记和思考，也用来见证我一步步走向优秀工程师的过程。"
+    }
+  },
+  "about": {
+    "section_title": {
+      "en": "About",
+      "zh-CN": "关于"
+    },
+    "section_copy": {
+      "en": "A short note on what I am learning, building, and gradually growing into.",
+      "zh-CN": "简单写一写我在学什么、做什么，以及我想慢慢走向哪里。"
+    },
+    "card_title": {
+      "en": "About",
+      "zh-CN": "关于"
+    },
+    "card_body": {
+      "en": "This site is a quiet record of what I am learning and building: software experiments, AI-related notes, project writeups, and the small steps that gradually turn curiosity into engineering ability.",
+      "zh-CN": "这个网站用来安静地记录我正在学习和搭建的内容：软件实验、AI 相关笔记、项目复盘，以及那些把好奇心慢慢沉淀成工程能力的小步骤。"
+    }
+  },
+  "recent_writing": {
+    "section_title": {
+      "en": "Recent Writing",
+      "zh-CN": "最近文章"
+    },
+    "section_copy": {
+      "en": "Short notes, project reflections, and writing that will slowly shape the blog.",
+      "zh-CN": "短笔记、项目复盘和一些会慢慢把博客养起来的文字。"
+    }
+  },
+  "footer": {
+    "description": {
+      "en": "Student homepage and bilingual blog.",
+      "zh-CN": "学生主页与双语博客。"
+    },
+    "built_with": {
+      "en": "Built with plain HTML, CSS, and JavaScript.",
+      "zh-CN": "使用纯 HTML、CSS、JavaScript 构建。"
+    },
+    "closing": {
+      "en": "Building,learning and growing.",
+      "zh-CN": "Building,learning and growing."
+    }
+  }
+}
