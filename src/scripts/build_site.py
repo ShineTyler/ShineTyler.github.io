@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import html
 import json
@@ -397,7 +397,9 @@ def render_home(lang: str, site: dict, home: dict, posts: List[ContentEntry]) ->
     <div class="intro-overlay-content">
       <h1 class="intro-overlay-title">TYLER</h1>
     </div>
-    <p class="intro-overlay-prompt"><span>PRESS</span><span>START</span></p>
+    <button class="intro-overlay-prompt intro-overlay-enter" type="button" aria-label="Press start to enter">
+      <span>PRESS</span><span>START</span>
+    </button>
     <div class="intro-overlay-arrow" aria-hidden="true">
       <span></span>
       <span></span>

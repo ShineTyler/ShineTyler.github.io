@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   var sections = document.querySelectorAll("[data-reveal]");
   var introOverlay = document.querySelector(".intro-overlay");
+  var introEnterButton = document.querySelector(".intro-overlay-enter");
   var introStorageKey = "tyler_intro_dismissed";
 
   function canUseStorage() {
@@ -76,7 +77,14 @@ document.addEventListener("DOMContentLoaded", function () {
       document.documentElement.classList.add("intro-locked");
       document.body.classList.add("intro-locked");
 
-      introOverlay.addEventListener("click", dismissIntro);
+      if (introEnterButton) {
+        introEnterButton.addEventListener("click", function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          dismissIntro();
+        });
+      }
+
       introOverlay.addEventListener("keydown", function (event) {
         if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();
