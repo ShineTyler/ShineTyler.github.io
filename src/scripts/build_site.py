@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import html
 import json
@@ -450,7 +450,7 @@ def render_home(lang: str, site: dict, home: dict, posts: List[ContentEntry]) ->
     {site_footer(lang, site, home)}
   </div>
 """
-    title = f"{site['owner']} | {ui(lang, 'home_title_suffix')}"
+    title = site['title']
     return shell_html(lang, title, ui(lang, "home_description"), body, 1)
 
 
