@@ -9,8 +9,8 @@
       "zh-CN": "On the journey to becoming an excellent engineer."
     },
     "portrait_note": {
-      "en": "I'm Tyler, a student who learns best by building. This site is where I keep my projects, notes, and reflections while growing into an excellent engineer.",
-      "zh-CN": "我是 Tyler，一名喜欢通过动手实践来学习的学生。这个网站用来记录我的项目、笔记和思考，也用来见证我一步步走向优秀工程师的过程。"
+      "en": "I'm Tyler, a novice striving to become an engineer. This website is used to record my projects, notes and thoughts, and also to witness my gradual progress towards becoming an excellent engineer.",
+      "zh-CN": "我是 Tyler，一名尝试成为工程师的菜鸟。这个网站用来记录我的项目、笔记和思考，也用来见证我一步步走向优秀工程师的过程。"
     }
   },
   "about": {
@@ -27,8 +27,8 @@
       "zh-CN": "关于"
     },
     "card_body": {
-      "en": "This site is a quiet record of what I am learning and building: software experiments, AI-related notes, project writeups, and the small steps that gradually turn curiosity into engineering ability.",
-      "zh-CN": "这个网站用来安静地记录我正在学习和搭建的内容：软件实验、AI 相关笔记、项目复盘，以及那些把好奇心慢慢沉淀成工程能力的小步骤。"
+      "en": "This website is used to quietly record the content I am learning and building, as well as those small steps that gradually transform curiosity into engineering capabilities.",
+      "zh-CN": "这个网站用来安静地记录我正在学习和搭建的内容，以及那些把好奇心慢慢沉淀成工程能力的小步骤。"
     }
   },
   "recent_writing": {

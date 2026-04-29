@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem D:/Git/logout -ErrorAction SilentlyContinue; if \\(-not \\(Test-Path D:/Git/logout\\)\\) { Write-Host \"Directory does not exist\" })"
+    ]
+  }
+}
