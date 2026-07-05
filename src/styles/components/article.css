@@ -1,0 +1,72 @@
+/* ── Post / Project page banner ── */
+.post-banner {
+  height: 210px;
+  background:
+    radial-gradient(circle at 12% 30%, rgba(139, 111, 90, 0.1), transparent 34%),
+    radial-gradient(circle at 82% 26%, rgba(50, 50, 50, 0.05), transparent 28%),
+    linear-gradient(170deg, #e8ddd3 0%, #ddd0c8 45%, #d4c6bb 100%);
+  border-bottom: 1px solid var(--line);
+}
+
+/* ── Floating card: article overlaps banner ── */
+.article-shell-float {
+  margin-top: -120px;
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Inline link: left-to-right underline on hover ── */
+a.post-link {
+  color: var(--accent-strong);
+  text-decoration: none;
+  position: relative;
+  border-bottom: 1px dotted var(--accent-warm);
+}
+a.post-link::after {
+  content: "";
+  position: absolute;
+  bottom: -0.0625rem;
+  left: 100%;
+  width: 0;
+  border-bottom: 0.0625rem solid var(--accent-strong);
+  transition: width 350ms ease, left 350ms ease;
+}
+a.post-link:hover::after,
+a.post-link:focus-visible::after {
+  left: 0;
+  width: 100%;
+}
+
+/* ── Post images ── */
+.post-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 24px 0;
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* ── Article content formatting ── */
+.article-shell strong {
+  font-weight: 700;
+  color: var(--text);
+}
+.article-shell em {
+  font-style: italic;
+  color: var(--muted);
+}
+.article-shell a:not(.post-link):not(.article-back):not(.card-link) {
+  color: var(--accent-strong);
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+
+@media (max-width: 720px) {
+  .post-banner {
+    height: 130px;
+  }
+  .article-shell-float {
+    margin-top: -64px;
+  }
+}

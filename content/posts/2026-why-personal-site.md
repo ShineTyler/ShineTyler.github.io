@@ -4,6 +4,7 @@ lang: en
 slug: start-here
 date: 2026-04-01
 category: notes
+tags: personal site, learning, writing
 ---
 
 The early version of a personal site is often more useful than people expect. You may not have internships, publications, or income yet. That is fine. A good site can still show taste, consistency, and initiative.

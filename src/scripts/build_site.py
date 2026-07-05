@@ -132,7 +132,26 @@ def load_entries(folder: Path) -> List[ContentEntry]:
     return entries
 
 
+def format_inline(text: str) -> str:
+    """Convert inline Markdown to HTML. Call on already-escaped text.
+    Order matters: images before links, bold before italic."""
+    # Images: ![alt](url)
+    text = re.sub(r'!\[([^\]]*)\]\(([^)\s]+(?:\s+"[^"]*")?)\)',
+                  r'<img src="\2" alt="\1" class="post-image" loading="lazy">', text)
+    # Links: [text](url)
+    text = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', r'<a href="\2" class="post-link">\1</a>', text)
+    # Bold
+    text = re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', text)
+    # Italic
+    text = re.sub(r'\*([^*]+)\*', r'<em>\1</em>', text)
+    # Inline code
+    text = re.sub(r'`([^`]+)`', r'<code>\1</code>', text)
+    return text
+
+
 def strip_markdown(text: str) -> str:
+    """Strip inline Markdown syntax — used only for plain-text contexts (summary, reading time, etc.)."""
+    text = re.sub(r"!\[[^\]]*\]\([^)]+\)", "", text)
     text = re.sub(r"`([^`]+)`", r"\1", text)
     text = re.sub(r"\*\*([^*]+)\*\*", r"\1", text)
     text = re.sub(r"\*([^*]+)\*", r"\1", text)
@@ -161,7 +180,8 @@ def markdown_to_html(markdown: str) -> str:
         nonlocal paragraph_buffer
         if paragraph_buffer:
             text = " ".join(part.strip() for part in paragraph_buffer if part.strip())
-            chunks.append(f"<p>{html.escape(text)}</p>")
+            escaped = html.escape(text)
+            chunks.append(f"<p>{format_inline(escaped)}</p>")
             paragraph_buffer = []
 
     def close_list() -> None:
@@ -210,9 +230,10 @@ def markdown_to_html(markdown: str) -> str:
             if not in_list:
                 chunks.append("<ul>")
                 in_list = True
-            chunks.append(f"<li>{html.escape(strip_markdown(line[2:].strip()))}</li>")
+            escaped = html.escape(line[2:].strip())
+            chunks.append(f"<li>{format_inline(escaped)}</li>")
             continue
-        paragraph_buffer.append(strip_markdown(line))
+        paragraph_buffer.append(line)
 
     close_paragraph()
     close_list()
@@ -276,10 +297,9 @@ def site_header(lang: str, current: str, depth: int) -> str:
     current_base = base_path(lang, depth)
     nav = [
         ("home", current_base),
-        ("about", f"{current_base}#about"),
+        ("about", f"{current_base}about/"),
         ("projects", f"{current_base}projects/"),
         ("blog", f"{current_base}blog/"),
-        ("contact", f"{current_base}#contact"),
     ]
     nav_items: List[str] = []
     for key, href in nav:
@@ -384,13 +404,7 @@ def render_placeholder_post(lang: str) -> str:
 
 def render_home(lang: str, site: dict, home: dict, posts: List[ContentEntry]) -> str:
     lang_posts = [entry for entry in posts if entry.meta.get("lang") == lang]
-    title_lines = "\n            ".join(
-        f'<span class="hero-title-line">{html.escape(line)}</span>'
-        for line in home["hero"]["title_lines"][lang]
-    )
-    cards = render_post_cards(lang_posts[:2], lang, "./blog/")
-    if len(lang_posts) < 2:
-        cards += render_placeholder_post(lang)
+    title_text = " ".join(home["hero"]["title_lines"][lang])
     body = f"""
   <div class="intro-overlay" role="button" tabindex="0" aria-label="Press start to enter Tyler's blog">
     <div class="intro-overlay-backdrop"></div>
@@ -409,51 +423,44 @@ def render_home(lang: str, site: dict, home: dict, posts: List[ContentEntry]) ->
     {site_header(lang, 'home', 1)}
     <main>
       <section class="hero" data-reveal>
-        <div class="hero-copy">
-          <h1 class="hero-title">
-            {title_lines}
-          </h1>
+        <header class="hero-header">
+          <h1 class="hero-title">{html.escape(title_text)}</h1>
           <p class="hero-subline">{html.escape(home['hero']['subtitle'][lang])}</p>
-        </div>
-        <div class="hero-visual">
-          <div class="portrait"></div>
-          <div class="hero-visual-meta">
-            <a href="mailto:{html.escape(site['email'])}">{html.escape(ui(lang, 'email'))}</a>
-            <a href="{html.escape(site['github'])}" target="_blank" rel="noreferrer">GitHub</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="about" data-reveal>
-        <div class="section-head">
-          <div>
-            <h2 class="section-title">{html.escape(home['about']['section_title'][lang])}</h2>
-          </div>
-        </div>
-        <div class="single-column">
-          <article class="info-card">
+        </header>
+        <div class="hero-body">
+          <div class="hero-about">
             <p>{html.escape(home['hero']['portrait_note'][lang])}</p>
             <p>{html.escape(home['about']['card_body'][lang])}</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="section" data-reveal>
-        <div class="section-head">
-          <div>
-            <h2 class="section-title">{html.escape(home['recent_writing']['section_title'][lang])}</h2>
+          </div>
+          <div class="hero-portrait">
+            <div class="portrait"></div>
           </div>
         </div>
-        <div class="grid-two">
-          {cards}
+      </section>
+    </main>
+  </div>
+"""
+    title = site['title']
+    return shell_html(lang, title, ui(lang, "home_description"), body, 1)
+
+
+def render_about(lang: str, site: dict, home: dict) -> str:
+    body = f"""
+  <div class="site-shell page-shell">
+    {site_header(lang, 'about', 2)}
+    <main>
+      <section class="section" style="padding-top: 52px;">
+        <div class="about-prose">
+          <p>{html.escape(home['hero']['portrait_note'][lang])}</p>
+          <p>{html.escape(home['about']['card_body'][lang])}</p>
         </div>
       </section>
     </main>
     {site_footer(lang, site, home)}
   </div>
 """
-    title = site['title']
-    return shell_html(lang, title, ui(lang, "home_description"), body, 1)
+    title = f"{ui(lang, 'about')} | {site['owner']}"
+    return shell_html(lang, title, ui(lang, "about"), body, 2)
 
 
 def render_blog_index(lang: str, site: dict, home: dict, posts: List[ContentEntry]) -> str:
@@ -463,11 +470,10 @@ def render_blog_index(lang: str, site: dict, home: dict, posts: List[ContentEntr
     {site_header(lang, 'blog', 2)}
     <main>
       <section class="section page-hero" data-reveal>
-        <h1 class="page-title">{html.escape(ui(lang, 'blog'))}</h1>
         <p class="page-intro">{html.escape(ui(lang, 'writing_intro'))}</p>
       </section>
       <section class="section" data-reveal>
-        <div class="grid-two">
+        <div class="card-stack">
           {render_post_cards(lang_posts, lang, "./")}
         </div>
       </section>
@@ -499,11 +505,10 @@ def render_projects_index(lang: str, site: dict, home: dict, projects: List[Cont
     {site_header(lang, 'projects', 2)}
     <main>
       <section class="section page-hero" data-reveal>
-        <h1 class="page-title">{html.escape(ui(lang, 'projects'))}</h1>
         <p class="page-intro">{html.escape(ui(lang, 'projects_intro'))}</p>
       </section>
       <section class="section" data-reveal>
-        <div class="grid-three">
+        <div class="card-stack">
           {''.join(cards)}
         </div>
       </section>
@@ -522,18 +527,24 @@ def render_post_page(lang: str, site: dict, post: ContentEntry, siblings: List[C
     alt_link = ""
     if alt:
         target = "../../../" + lang_dir(other_lang(lang)) + f"/blog/{slug}/"
-        alt_link = f'<p><a class="card-link" href="{target}">{html.escape(ui(lang, "read_in_other_language"))}</a></p>'
+        alt_link = f'<a class="article-lang" href="{target}">{html.escape(ui(lang, "read_in_other_language"))}</a>'
+    tags_raw = post.meta.get("tags", "")
+    tags_html = ""
+    if tags_raw:
+        tags = [t.strip() for t in tags_raw.split(",") if t.strip()]
+        tags_html = "".join(f'<span class="tag-pill">{html.escape(t)}</span>' for t in tags)
     body = f"""
   <article class="article-shell" data-reveal>
     <header>
-      <p class="eyebrow">{html.escape(ui(lang, 'start_here'))}</p>
-      <div class="meta-row"><span class="meta-pill">{html.escape(ui(lang, 'article_language'))}</span><span class="meta-pill">{html.escape(reading_time(post.body, lang))}</span><span class="meta-pill">{html.escape(post.meta.get('date', ''))}</span></div>
+      <div class="article-topbar">
+        <a class="article-back" href="../">&larr; {html.escape(ui(lang, 'back_to_blog'))}</a>
+        {alt_link}
+      </div>
+      <div class="meta-row"><span class="meta-pill">{html.escape(post.meta.get('date', ''))}</span>{tags_html}</div>
       <h1>{html.escape(title)}</h1>
       <p class="page-intro">{html.escape(post_summary(post, lang))}</p>
-      {alt_link}
     </header>
     {markdown_to_html(post.body)}
-    <a class="article-back" href="../">&larr; {html.escape(ui(lang, 'back_to_blog'))}</a>
   </article>
 """
     return shell_html(lang, f"{title} | {site['owner']}", post_summary(post, lang), body, 3)
@@ -546,18 +557,19 @@ def render_project_page(lang: str, site: dict, project: ContentEntry, siblings: 
     alt_link = ""
     if alt:
         target = "../../../" + lang_dir(other_lang(lang)) + f"/projects/{slug}/"
-        alt_link = f'<p><a class="card-link" href="{target}">{html.escape(ui(lang, "read_in_other_language"))}</a></p>'
+        alt_link = f'<a class="article-lang" href="{target}">{html.escape(ui(lang, "read_in_other_language"))}</a>'
     body = f"""
   <article class="article-shell" data-reveal>
     <header>
-      <p class="eyebrow">{html.escape(ui(lang, 'projects'))}</p>
+      <div class="article-topbar">
+        <a class="article-back" href="../">&larr; {html.escape(ui(lang, 'projects'))}</a>
+        {alt_link}
+      </div>
       <div class="meta-row"><span class="meta-pill">{html.escape(project.meta.get('status', ui(lang, 'draft_project')))}</span></div>
       <h1>{html.escape(title)}</h1>
       <p class="page-intro">{html.escape(project_summary(project, lang))}</p>
-      {alt_link}
     </header>
     {markdown_to_html(project.body)}
-    <a class="article-back" href="../">&larr; {html.escape(ui(lang, 'projects'))}</a>
   </article>
 """
     return shell_html(lang, f"{title} | {site['owner']}", project_summary(project, lang), body, 3)
@@ -619,6 +631,7 @@ def build() -> None:
         write(base / "index.html", render_home(lang, site, home, posts))
         write(base / "blog" / "index.html", render_blog_index(lang, site, home, posts))
         write(base / "projects" / "index.html", render_projects_index(lang, site, home, projects))
+        write(base / "about" / "index.html", render_about(lang, site, home))
 
         for entry in posts:
             if entry.meta.get("lang") == lang:
