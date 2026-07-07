@@ -414,8 +414,8 @@ img { max-width: 100%; display: block; }
   z-index: 10;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 18px;
+  justify-content: center;
+  gap: 48px;
   padding: 18px 48px;
   background: var(--header-bg);
   border-bottom: 1px solid var(--line);

@@ -1,5 +1,9 @@
-/* Source component entry for header-related styles. */
-.site-header,
+/* Source component entry for header-related styles.
+   Layout: brand + nav centered with gap. */
+.site-header {
+  justify-content: center;
+  gap: 48px;
+}
 .site-nav,
 .language-switch,
 .brand {
