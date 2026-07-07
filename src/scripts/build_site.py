@@ -14,79 +14,35 @@ SRC = ROOT / "src"
 CONTENT = ROOT / "content"
 PUBLIC = ROOT / "public"
 
-LANG_PATHS = {"en": "en", "zh-CN": "zh"}
-
 UI = {
-    "en": {
-        "home": "Home",
-        "about": "About",
-        "projects": "Projects",
-        "blog": "Blog",
-        "contact": "Contact",
-        "primary_nav": "Primary",
-        "language_switcher": "Language switcher",
-        "email": "Email",
-        "home_title_suffix": "Student Homepage & Blog",
-        "home_description": "A bilingual student homepage and blog built for GitHub Pages.",
-        "blog_description": "English posts from a bilingual student homepage and blog.",
-        "projects_description": "Selected and upcoming projects from Tyler.",
-        "not_found_title": "Page Not Found",
-        "not_found_description": "This page could not be found.",
-        "not_found_heading": "This page drifted out of orbit.",
-        "not_found_copy": "The link may be outdated, or the page may have moved while the site was being reorganized.",
-        "go_home_en": "Go to English Home",
-        "go_home_zh": "Go to Chinese Home",
-        "read_article": "Read article",
-        "back_to_blog": "Back to blog",
-        "read_in_other_language": "Read this in Chinese",
-        "read_project": "View project",
-        "placeholder_post_title": "Your first project breakdown",
-        "placeholder_post_summary": "The next post can be a small project breakdown.",
-        "placeholder_post_kicker": "Placeholder",
-        "placeholder_post_meta": "Future post",
-        "placeholder_post_link": "Add this next",
-        "start_here": "Start Here",
-        "draft_project": "Coming soon",
-        "project_label": "Project",
-        "article_language": "English",
-        "writing_intro": "Essays, project notes, reading logs, and short reflections. Clear writing matters more than volume.",
-        "projects_intro": "A separate page for work I want to present with more room, context, and screenshots.",
-    },
-    "zh-CN": {
-        "home": "首页",
-        "about": "关于",
-        "projects": "项目",
-        "blog": "博客",
-        "contact": "联系",
-        "primary_nav": "主要导航",
-        "language_switcher": "语言切换",
-        "email": "邮箱",
-        "home_title_suffix": "学生主页与博客",
-        "home_description": "一个适合学生的中英文个人主页与博客。",
-        "blog_description": "中英文学生活页中的中文博客页面。",
-        "projects_description": "Tyler 的项目展示页。",
-        "not_found_title": "页面未找到",
-        "not_found_description": "这个页面暂时不存在。",
-        "not_found_heading": "这个页面暂时飞走了。",
-        "not_found_copy": "链接可能已经失效，或者页面在整理网站结构时被移动了位置。",
-        "go_home_en": "前往英文首页",
-        "go_home_zh": "前往中文首页",
-        "read_article": "阅读全文",
-        "back_to_blog": "返回博客",
-        "read_in_other_language": "阅读英文版",
-        "read_project": "查看项目",
-        "placeholder_post_title": "写下你的第一篇项目复盘",
-        "placeholder_post_summary": "下一篇可以先从一个小项目的复盘开始。",
-        "placeholder_post_kicker": "预留位",
-        "placeholder_post_meta": "下一篇",
-        "placeholder_post_link": "把这里换成你的新文章",
-        "start_here": "从这里开始",
-        "draft_project": "暂未公开",
-        "project_label": "项目",
-        "article_language": "中文",
-        "writing_intro": "文章、项目复盘、读书笔记和阶段反思。学生博客最重要的是清晰和持续。",
-        "projects_intro": "把作品单独放在这里，会比堆在首页里更舒服，也更方便以后慢慢补充细节。",
-    },
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "blog": "Blog",
+    "contact": "Contact",
+    "primary_nav": "Primary",
+    "email": "Email",
+    "home_description": "A personal student homepage and blog.",
+    "blog_description": "Essays, project notes, reading logs, and short reflections.",
+    "projects_description": "Selected and upcoming projects from Tyler.",
+    "not_found_title": "Page Not Found",
+    "not_found_description": "This page could not be found.",
+    "not_found_heading": "This page drifted out of orbit.",
+    "not_found_copy": "The link may be outdated, or the page may have moved while the site was being reorganized.",
+    "go_home": "Go Home",
+    "read_article": "Read article",
+    "back_to_blog": "Back to blog",
+    "read_project": "View project",
+    "placeholder_post_title": "Your first project breakdown",
+    "placeholder_post_summary": "The next post can be a small project breakdown.",
+    "placeholder_post_kicker": "Placeholder",
+    "placeholder_post_meta": "Future post",
+    "placeholder_post_link": "Add this next",
+    "start_here": "Start Here",
+    "draft_project": "Coming soon",
+    "project_label": "Project",
+    "writing_intro": "Essays, project notes, reading logs, and short reflections. Clear writing matters more than volume.",
+    "projects_intro": "A separate page for work I want to present with more room, context, and screenshots.",
 }
 
 
@@ -118,7 +74,7 @@ def parse_front_matter(text: str) -> Tuple[Dict[str, str], str]:
 
 
 def infer_slug(path: Path) -> str:
-    return path.stem.replace(".zh-CN", "")
+    return path.stem
 
 
 def load_entries(folder: Path) -> List[ContentEntry]:
@@ -255,83 +211,43 @@ def rel_prefix(depth: int) -> str:
     return "../" * depth
 
 
-def lang_dir(lang: str) -> str:
-    return LANG_PATHS[lang]
-
-
-def html_lang(lang: str) -> str:
-    return "zh-CN" if lang == "zh-CN" else "en"
-
-
-def ui(lang: str, key: str) -> str:
-    return UI[lang][key]
-
-
-def other_lang(lang: str) -> str:
-    return "zh-CN" if lang == "en" else "en"
-
-
-def base_path(lang: str, depth: int) -> str:
-    return f"{rel_prefix(depth)}{lang_dir(lang)}/"
-
-
-def language_switch(lang: str, depth: int, section: str | None = None, slug: str | None = None) -> str:
-    links = []
-    for candidate in ("en", "zh-CN"):
-        href = base_path(candidate, depth)
-        if section == "blog":
-            href += "blog/"
-            if slug:
-                href += f"{slug}/"
-        elif section == "projects":
-            href += "projects/"
-            if slug:
-                href += f"{slug}/"
-        current_attr = ' class="current"' if candidate == lang else ""
-        text = "EN" if candidate == "en" else "中文"
-        links.append(f'<a{current_attr} href="{href}">{text}</a>')
-    return "".join(links)
-
-
-def site_header(lang: str, current: str, depth: int) -> str:
-    current_base = base_path(lang, depth)
+def site_header(current: str, depth: int) -> str:
+    prefix = rel_prefix(depth)
+    home_href = prefix or "./"
     nav = [
-        ("home", current_base),
-        ("about", f"{current_base}about/"),
-        ("projects", f"{current_base}projects/"),
-        ("blog", f"{current_base}blog/"),
+        ("home", home_href),
+        ("about", f"{prefix}about/"),
+        ("projects", f"{prefix}projects/"),
+        ("blog", f"{prefix}blog/"),
     ]
     nav_items: List[str] = []
     for key, href in nav:
         current_attr = ' class="current"' if key == current else ""
-        nav_items.append(f'<a{current_attr} href="{href}">{html.escape(ui(lang, key))}</a>')
+        nav_items.append(f'<a{current_attr} href="{href}">{html.escape(UI[key])}</a>')
     nav_html = "\n        ".join(nav_items)
     return f"""
     <header class="site-header">
-      <a class="brand" href="{current_base}">
+      <a class="brand" href="{home_href}">
         <span class="brand-wordmark">Tyler&apos;s Corner</span>
       </a>
-      <nav class="site-nav" aria-label="{html.escape(ui(lang, 'primary_nav'))}">
+      <nav class="site-nav" aria-label="{html.escape(UI['primary_nav'])}">
         {nav_html}
       </nav>
-      <div class="language-switch" aria-label="{html.escape(ui(lang, 'language_switcher'))}">
-        {language_switch(lang, depth)}
-      </div>
     </header>"""
 
 
-def site_footer(lang: str, site: dict, home: dict) -> str:
+def site_footer(site: dict, home: dict) -> str:
     return f"""
     <footer class="site-footer" id="contact">
-      <div class="footer-row footer-row-centered"><span class="footer-title">{html.escape(home['footer']['closing'][lang])}</span></div>
+      <div class="footer-row footer-row-centered"><span class="footer-title">{html.escape(home['footer']['closing'])}</span></div>
       <div class="footer-row footer-row-centered"><span>&copy; <span data-year></span> {html.escape(site['owner'])}</span></div>
     </footer>"""
 
 
-def shell_html(lang: str, title: str, description: str, body: str, depth: int) -> str:
+def shell_html(title: str, description: str, body: str, depth: int) -> str:
     prefix = rel_prefix(depth)
     return f"""<!DOCTYPE html>
-<html lang="{html_lang(lang)}">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -352,59 +268,52 @@ def shell_html(lang: str, title: str, description: str, body: str, depth: int) -
 """
 
 
-def reading_time(body: str, lang: str) -> str:
+def reading_time(body: str) -> str:
     word_count = max(1, len(strip_markdown(body).split()))
     minutes = max(1, round(word_count / 180))
-    if lang == "zh-CN":
-        return f"{minutes} 分钟阅读"
     return f"{minutes} min read"
 
 
-def post_summary(entry: ContentEntry, lang: str) -> str:
+def post_summary(entry: ContentEntry) -> str:
     return entry.meta.get("summary") or first_paragraph(entry.body) or (
         "A short note about learning in public."
-        if lang == "en"
-        else "一篇关于公开记录学习过程的短文。"
     )
 
 
-def project_summary(entry: ContentEntry, lang: str) -> str:
+def project_summary(entry: ContentEntry) -> str:
     return entry.meta.get("summary") or first_paragraph(entry.body) or (
         "A placeholder project that will be expanded later."
-        if lang == "en"
-        else "一个之后会继续展开整理的项目。"
     )
 
 
-def render_post_cards(posts: Iterable[ContentEntry], lang: str, href_prefix: str) -> str:
+def render_post_cards(posts: Iterable[ContentEntry], href_prefix: str) -> str:
     cards: List[str] = []
     for entry in posts:
         slug = entry.meta["slug"]
         cards.append(
             f"""
           <article class="post-card">
-            <div class="card-top"><div class="card-kicker">{html.escape(entry.meta.get('date', ui(lang, 'start_here')))}</div><span class="meta-pill">{html.escape(reading_time(entry.body, lang))}</span></div>
+            <div class="card-top"><div class="card-kicker">{html.escape(entry.meta.get('date', UI['start_here']))}</div><span class="meta-pill">{html.escape(reading_time(entry.body))}</span></div>
             <h3>{html.escape(entry.meta.get('title', 'Untitled'))}</h3>
-            <p>{html.escape(post_summary(entry, lang))}</p>
-            <a class="card-link" href="{href_prefix}{html.escape(slug)}/">{html.escape(ui(lang, 'read_article'))}</a>
+            <p>{html.escape(post_summary(entry))}</p>
+            <a class="card-link" href="{href_prefix}{html.escape(slug)}/">{html.escape(UI['read_article'])}</a>
           </article>"""
         )
     return "".join(cards)
 
 
-def render_placeholder_post(lang: str) -> str:
+def render_placeholder_post() -> str:
     return f"""
           <article class="post-card">
-            <div class="card-top"><div class="card-kicker">{html.escape(ui(lang, 'placeholder_post_kicker'))}</div><span class="meta-pill">{html.escape(ui(lang, 'placeholder_post_meta'))}</span></div>
-            <h3>{html.escape(ui(lang, 'placeholder_post_title'))}</h3>
-            <p>{html.escape(ui(lang, 'placeholder_post_summary'))}</p>
-            <a class="card-link" href="./blog/">{html.escape(ui(lang, 'placeholder_post_link'))}</a>
+            <div class="card-top"><div class="card-kicker">{html.escape(UI['placeholder_post_kicker'])}</div><span class="meta-pill">{html.escape(UI['placeholder_post_meta'])}</span></div>
+            <h3>{html.escape(UI['placeholder_post_title'])}</h3>
+            <p>{html.escape(UI['placeholder_post_summary'])}</p>
+            <a class="card-link" href="./blog/">{html.escape(UI['placeholder_post_link'])}</a>
           </article>"""
 
 
-def render_home(lang: str, site: dict, home: dict, posts: List[ContentEntry]) -> str:
-    lang_posts = [entry for entry in posts if entry.meta.get("lang") == lang]
-    title_text = " ".join(home["hero"]["title_lines"][lang])
+def render_home(site: dict, home: dict, posts: List[ContentEntry]) -> str:
+    title_text = " ".join(home["hero"]["title_lines"])
     body = f"""
   <div class="intro-overlay" role="button" tabindex="0" aria-label="Press start to enter Tyler's blog">
     <div class="intro-overlay-backdrop"></div>
@@ -420,17 +329,17 @@ def render_home(lang: str, site: dict, home: dict, posts: List[ContentEntry]) ->
     </div>
   </div>
   <div class="site-shell">
-    {site_header(lang, 'home', 1)}
+    {site_header('home', 0)}
     <main>
       <section class="hero" data-reveal>
         <header class="hero-header">
           <h1 class="hero-title">{html.escape(title_text)}</h1>
-          <p class="hero-subline">{html.escape(home['hero']['subtitle'][lang])}</p>
+          <p class="hero-subline">{html.escape(home['hero']['subtitle'])}</p>
         </header>
         <div class="hero-body">
           <div class="hero-about">
-            <p>{html.escape(home['hero']['portrait_note'][lang])}</p>
-            <p>{html.escape(home['about']['card_body'][lang])}</p>
+            <p>{html.escape(home['hero']['portrait_note'])}</p>
+            <p>{html.escape(home['about']['card_body'])}</p>
           </div>
           <div class="hero-portrait">
             <div class="portrait"></div>
@@ -441,71 +350,69 @@ def render_home(lang: str, site: dict, home: dict, posts: List[ContentEntry]) ->
   </div>
 """
     title = site['title']
-    return shell_html(lang, title, ui(lang, "home_description"), body, 1)
+    return shell_html(title, UI["home_description"], body, 0)
 
 
-def render_about(lang: str, site: dict, home: dict) -> str:
+def render_about(site: dict, home: dict) -> str:
     body = f"""
   <div class="site-shell page-shell">
-    {site_header(lang, 'about', 2)}
+    {site_header('about', 1)}
     <main>
       <section class="section" style="padding-top: 52px;">
         <div class="about-prose">
-          <p>{html.escape(home['hero']['portrait_note'][lang])}</p>
-          <p>{html.escape(home['about']['card_body'][lang])}</p>
+          <p>{html.escape(home['hero']['portrait_note'])}</p>
+          <p>{html.escape(home['about']['card_body'])}</p>
         </div>
       </section>
     </main>
-    {site_footer(lang, site, home)}
+    {site_footer(site, home)}
   </div>
 """
-    title = f"{ui(lang, 'about')} | {site['owner']}"
-    return shell_html(lang, title, ui(lang, "about"), body, 2)
+    title = f"{UI['about']} | {site['owner']}"
+    return shell_html(title, UI["about"], body, 1)
 
 
-def render_blog_index(lang: str, site: dict, home: dict, posts: List[ContentEntry]) -> str:
-    lang_posts = [entry for entry in posts if entry.meta.get("lang") == lang]
+def render_blog_index(site: dict, home: dict, posts: List[ContentEntry]) -> str:
     body = f"""
   <div class="site-shell page-shell">
-    {site_header(lang, 'blog', 2)}
+    {site_header('blog', 1)}
     <main>
       <section class="section page-hero" data-reveal>
-        <p class="page-intro">{html.escape(ui(lang, 'writing_intro'))}</p>
+        <p class="page-intro">{html.escape(UI['writing_intro'])}</p>
       </section>
       <section class="section" data-reveal>
         <div class="card-stack">
-          {render_post_cards(lang_posts, lang, "./")}
+          {render_post_cards(posts, "./")}
         </div>
       </section>
     </main>
-    {site_footer(lang, site, home)}
+    {site_footer(site, home)}
   </div>
 """
-    title = f"{ui(lang, 'blog')} | {site['owner']}"
-    return shell_html(lang, title, ui(lang, "blog_description"), body, 2)
+    title = f"{UI['blog']} | {site['owner']}"
+    return shell_html(title, UI["blog_description"], body, 1)
 
 
-def render_projects_index(lang: str, site: dict, home: dict, projects: List[ContentEntry]) -> str:
-    lang_projects = [entry for entry in projects if entry.meta.get("lang") == lang]
+def render_projects_index(site: dict, home: dict, projects: List[ContentEntry]) -> str:
     cards = []
-    for idx, entry in enumerate(lang_projects, start=1):
+    for idx, entry in enumerate(projects, start=1):
         status = entry.meta.get("status", "draft")
-        badge = ui(lang, "draft_project") if status == "draft" else status
+        badge = UI["draft_project"] if status == "draft" else status
         cards.append(
             f"""
           <article class="project-card">
-            <div class="card-top"><div class="card-kicker">{html.escape(ui(lang, 'project_label'))} {idx:02d}</div><span class="meta-pill">{html.escape(badge)}</span></div>
+            <div class="card-top"><div class="card-kicker">{html.escape(UI['project_label'])} {idx:02d}</div><span class="meta-pill">{html.escape(badge)}</span></div>
             <h3>{html.escape(entry.meta.get('title', 'Untitled'))}</h3>
-            <p>{html.escape(project_summary(entry, lang))}</p>
-            <a class="card-link" href="./{html.escape(entry.meta['slug'])}/">{html.escape(ui(lang, 'read_project'))}</a>
+            <p>{html.escape(project_summary(entry))}</p>
+            <a class="card-link" href="./{html.escape(entry.meta['slug'])}/">{html.escape(UI['read_project'])}</a>
           </article>"""
         )
     body = f"""
   <div class="site-shell page-shell">
-    {site_header(lang, 'projects', 2)}
+    {site_header('projects', 1)}
     <main>
       <section class="section page-hero" data-reveal>
-        <p class="page-intro">{html.escape(ui(lang, 'projects_intro'))}</p>
+        <p class="page-intro">{html.escape(UI['projects_intro'])}</p>
       </section>
       <section class="section" data-reveal>
         <div class="card-stack">
@@ -513,21 +420,15 @@ def render_projects_index(lang: str, site: dict, home: dict, projects: List[Cont
         </div>
       </section>
     </main>
-    {site_footer(lang, site, home)}
+    {site_footer(site, home)}
   </div>
 """
-    title = f"{ui(lang, 'projects')} | {site['owner']}"
-    return shell_html(lang, title, ui(lang, "projects_description"), body, 2)
+    title = f"{UI['projects']} | {site['owner']}"
+    return shell_html(title, UI["projects_description"], body, 1)
 
 
-def render_post_page(lang: str, site: dict, post: ContentEntry, siblings: List[ContentEntry]) -> str:
+def render_post_page(site: dict, post: ContentEntry) -> str:
     title = post.meta.get("title", "Untitled")
-    slug = post.meta["slug"]
-    alt = next((entry for entry in siblings if entry.meta.get("slug") == slug and entry.meta.get("lang") == other_lang(lang)), None)
-    alt_link = ""
-    if alt:
-        target = "../../../" + lang_dir(other_lang(lang)) + f"/blog/{slug}/"
-        alt_link = f'<a class="article-lang" href="{target}">{html.escape(ui(lang, "read_in_other_language"))}</a>'
     tags_raw = post.meta.get("tags", "")
     tags_html = ""
     if tags_raw:
@@ -537,42 +438,34 @@ def render_post_page(lang: str, site: dict, post: ContentEntry, siblings: List[C
   <article class="article-shell" data-reveal>
     <header>
       <div class="article-topbar">
-        <a class="article-back" href="../">&larr; {html.escape(ui(lang, 'back_to_blog'))}</a>
-        {alt_link}
+        <a class="article-back" href="../">&larr; {html.escape(UI['back_to_blog'])}</a>
       </div>
       <div class="meta-row"><span class="meta-pill">{html.escape(post.meta.get('date', ''))}</span>{tags_html}</div>
       <h1>{html.escape(title)}</h1>
-      <p class="page-intro">{html.escape(post_summary(post, lang))}</p>
+      <p class="page-intro">{html.escape(post_summary(post))}</p>
     </header>
     {markdown_to_html(post.body)}
   </article>
 """
-    return shell_html(lang, f"{title} | {site['owner']}", post_summary(post, lang), body, 3)
+    return shell_html(f"{title} | {site['owner']}", post_summary(post), body, 2)
 
 
-def render_project_page(lang: str, site: dict, project: ContentEntry, siblings: List[ContentEntry]) -> str:
+def render_project_page(site: dict, project: ContentEntry) -> str:
     title = project.meta.get("title", "Untitled")
-    slug = project.meta["slug"]
-    alt = next((entry for entry in siblings if entry.meta.get("slug") == slug and entry.meta.get("lang") == other_lang(lang)), None)
-    alt_link = ""
-    if alt:
-        target = "../../../" + lang_dir(other_lang(lang)) + f"/projects/{slug}/"
-        alt_link = f'<a class="article-lang" href="{target}">{html.escape(ui(lang, "read_in_other_language"))}</a>'
     body = f"""
   <article class="article-shell" data-reveal>
     <header>
       <div class="article-topbar">
-        <a class="article-back" href="../">&larr; {html.escape(ui(lang, 'projects'))}</a>
-        {alt_link}
+        <a class="article-back" href="../">&larr; {html.escape(UI['projects'])}</a>
       </div>
-      <div class="meta-row"><span class="meta-pill">{html.escape(project.meta.get('status', ui(lang, 'draft_project')))}</span></div>
+      <div class="meta-row"><span class="meta-pill">{html.escape(project.meta.get('status', UI['draft_project']))}</span></div>
       <h1>{html.escape(title)}</h1>
-      <p class="page-intro">{html.escape(project_summary(project, lang))}</p>
+      <p class="page-intro">{html.escape(project_summary(project))}</p>
     </header>
     {markdown_to_html(project.body)}
   </article>
 """
-    return shell_html(lang, f"{title} | {site['owner']}", project_summary(project, lang), body, 3)
+    return shell_html(f"{title} | {site['owner']}", project_summary(project), body, 2)
 
 
 def write(path: Path, text: str) -> None:
@@ -589,36 +482,22 @@ def build() -> None:
     posts = load_entries(CONTENT / "posts")
     projects = load_entries(CONTENT / "projects")
 
-    write(
-        PUBLIC / "index.html",
-        """<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Loading...</title>
-  <meta name="description" content="A bilingual student homepage and blog starter for GitHub Pages.">
-  <script>(function(){var lang=(navigator.language||'en').toLowerCase();var target=lang.indexOf('zh')===0?'./zh/':'./en/';window.location.replace(target);}());</script>
-</head>
-<body></body>
-</html>
-""",
-    )
+    # Root homepage — no redirect needed
+    write(PUBLIC / "index.html", render_home(site, home, posts))
 
+    # 404 page
     write(
         PUBLIC / "404.html",
         shell_html(
-            "en",
-            ui("en", "not_found_title"),
-            ui("en", "not_found_description"),
+            UI["not_found_title"],
+            UI["not_found_description"],
             f"""
   <main class="error-shell">
     <p class="eyebrow">404</p>
-    <h1 class="page-title">{html.escape(ui('en', 'not_found_heading'))}</h1>
-    <p class="page-intro">{html.escape(ui('en', 'not_found_copy'))}</p>
+    <h1 class="page-title">{html.escape(UI['not_found_heading'])}</h1>
+    <p class="page-intro">{html.escape(UI['not_found_copy'])}</p>
     <div class="button-row">
-      <a class="button button-primary" href="./en/">{html.escape(ui('en', 'go_home_en'))}</a>
-      <a class="button button-secondary" href="./zh/">{html.escape(ui('zh-CN', 'go_home_zh'))}</a>
+      <a class="button button-primary" href="./">{html.escape(UI['go_home'])}</a>
     </div>
   </main>
 """,
@@ -626,20 +505,16 @@ def build() -> None:
         ),
     )
 
-    for lang in ("en", "zh-CN"):
-        base = PUBLIC / lang_dir(lang)
-        write(base / "index.html", render_home(lang, site, home, posts))
-        write(base / "blog" / "index.html", render_blog_index(lang, site, home, posts))
-        write(base / "projects" / "index.html", render_projects_index(lang, site, home, projects))
-        write(base / "about" / "index.html", render_about(lang, site, home))
+    # Subpages at root level
+    write(PUBLIC / "about" / "index.html", render_about(site, home))
+    write(PUBLIC / "blog" / "index.html", render_blog_index(site, home, posts))
+    write(PUBLIC / "projects" / "index.html", render_projects_index(site, home, projects))
 
-        for entry in posts:
-            if entry.meta.get("lang") == lang:
-                write(base / "blog" / entry.meta["slug"] / "index.html", render_post_page(lang, site, entry, posts))
+    for entry in posts:
+        write(PUBLIC / "blog" / entry.meta["slug"] / "index.html", render_post_page(site, entry))
 
-        for entry in projects:
-            if entry.meta.get("lang") == lang:
-                write(base / "projects" / entry.meta["slug"] / "index.html", render_project_page(lang, site, entry, projects))
+    for entry in projects:
+        write(PUBLIC / "projects" / entry.meta["slug"] / "index.html", render_project_page(site, entry))
 
 
 if __name__ == "__main__":

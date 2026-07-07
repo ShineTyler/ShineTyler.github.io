@@ -554,19 +554,13 @@ html:lang(en) .article-back {
   font-family: "JetBrains Mono Web", "JetBrains Mono", "Cascadia Code", Consolas, monospace;
 }
 
-html:lang(en) .hero-subline,
-html:lang(zh-CN) .hero-subline {
+html:lang(en) .hero-subline {
   font-family: "Young Serif Web", "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
 }
 
 html:lang(en) .hero .hero-title {
   font-size: clamp(2.6rem, 5vw, 4.2rem);
   line-height: 1.12;
-}
-
-html:lang(zh-CN) .hero .hero-title {
-  line-height: 1.14;
-  letter-spacing: -0.02em;
 }
 
 html:lang(en) .page-intro,
@@ -730,12 +724,7 @@ html:lang(en) .article-shell li {
   max-width: 30ch;
 }
 
-html:lang(zh-CN) .portrait::after {
-  content: "这里可以放头像、插画，或者你最喜欢项目的一张图";
-}
-
-.portrait::after,
-html:lang(zh-CN) .portrait::after {
+.portrait::after {
   content: "";
 }
 
@@ -752,10 +741,6 @@ html:lang(en) .portrait-note {
   font-family: "JetBrains Mono Web", "JetBrains Mono", "Cascadia Code", Consolas, monospace;
   font-size: 0.95rem;
   line-height: 1.8;
-}
-
-html:lang(zh-CN) .portrait-note {
-  text-justify: inter-character;
 }
 
 .hero-metrics {
@@ -906,10 +891,6 @@ html:lang(zh-CN) .portrait-note {
   color: var(--post-card-title);
 }
 
-html:lang(zh-CN) .post-card h3 {
-  font-family: "Iowan Old Style", "Palatino Linotype", serif;
-}
-
 .info-card p,
 .project-card p,
 .post-card p,
@@ -935,18 +916,6 @@ html:lang(zh-CN) .post-card h3 {
 .list-card li {
   max-width: none;
   width: 100%;
-}
-
-html:lang(zh-CN) .info-card p,
-html:lang(zh-CN) .project-card p,
-html:lang(zh-CN) .post-card p,
-html:lang(zh-CN) .timeline-card p,
-html:lang(zh-CN) .quote-card p,
-html:lang(zh-CN) .list-card p,
-html:lang(zh-CN) .list-card li,
-html:lang(zh-CN) .article-shell li,
-html:lang(zh-CN) .article-shell p {
-  text-justify: inter-character;
 }
 
 .project-card,
@@ -1267,10 +1236,6 @@ a.post-link:focus-visible::after {
 
   .hero .hero-title {
     font-size: clamp(2.2rem, 9vw, 2.8rem);
-    max-width: 100%;
-  }
-
-  html:lang(zh-CN) .hero .hero-title {
     max-width: 100%;
   }
 
