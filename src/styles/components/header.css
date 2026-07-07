@@ -1,10 +1,16 @@
 /* Source component entry for header-related styles.
-   Layout: brand + nav centered with gap. */
+   Layout: brand left, nav centered via CSS grid. */
 .site-header {
-  justify-content: center;
-  gap: 48px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
 }
-.site-nav,
-.language-switch,
 .brand {
+  grid-column: 1;
+  justify-self: start;
+}
+.site-nav {
+  grid-column: 2;
+  justify-self: center;
+}
+.language-switch {
 }

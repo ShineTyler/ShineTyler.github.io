@@ -412,17 +412,23 @@ img { max-width: 100%; display: block; }
   position: sticky;
   top: 0;
   z-index: 10;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: center;
-  gap: 48px;
   padding: 18px 48px;
   background: var(--header-bg);
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(16px);
 }
 
+.site-nav {
+  grid-column: 2;
+  justify-self: center;
+}
+
 .brand {
+  grid-column: 1;
+  justify-self: start;
   display: flex;
   align-items: center;
   text-decoration: none;
@@ -1165,11 +1171,25 @@ a.post-link:focus-visible::after {
 }
 
 @media (max-width: 980px) {
-  .site-header,
+  .site-header {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+  }
   .section-head,
   .footer-row {
     align-items: start;
     flex-direction: column;
+  }
+
+  .site-nav {
+    grid-column: unset;
+    justify-self: unset;
+  }
+
+  .brand {
+    grid-column: unset;
+    justify-self: unset;
   }
 
   .site-header,
