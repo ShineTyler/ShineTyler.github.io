@@ -88,6 +88,35 @@ def load_entries(folder: Path) -> List[ContentEntry]:
     return entries
 
 
+def protect_math(text: str) -> Tuple[str, List[str]]:
+    """Replace math blocks with placeholders so html.escape won't mangle & < > inside them."""
+    blocks: List[str] = []
+
+    def save(m: re.Match) -> str:
+        blocks.append(m.group(0))
+        return f"\x00MATH{len(blocks) - 1}\x00"
+
+    # Display math first ($$...$$), then inline math ($...$)
+    text = re.sub(r'\$\$[^$]+\$\$', save, text)
+    text = re.sub(r'(?<!\$)\$[^$]+\$(?!\$)', save, text)
+    return text, blocks
+
+
+def restore_math(text: str, blocks: List[str]) -> str:
+    """Restore math blocks from placeholders."""
+    for i, block in enumerate(blocks):
+        text = text.replace(f"\x00MATH{i}\x00", block)
+    return text
+
+
+def escape_and_format(text: str) -> str:
+    """HTML-escape and apply inline formatting, keeping math blocks intact."""
+    math_text, math_blocks = protect_math(text)
+    escaped = html.escape(math_text)
+    formatted = format_inline(escaped)
+    return restore_math(formatted, math_blocks)
+
+
 def format_inline(text: str) -> str:
     """Convert inline Markdown to HTML. Call on already-escaped text.
     Order matters: images before links, bold before italic."""
@@ -136,8 +165,7 @@ def markdown_to_html(markdown: str) -> str:
         nonlocal paragraph_buffer
         if paragraph_buffer:
             text = " ".join(part.strip() for part in paragraph_buffer if part.strip())
-            escaped = html.escape(text)
-            chunks.append(f"<p>{format_inline(escaped)}</p>")
+            chunks.append(f"<p>{escape_and_format(text)}</p>")
             paragraph_buffer = []
 
     def close_list() -> None:
@@ -174,20 +202,19 @@ def markdown_to_html(markdown: str) -> str:
         if line.startswith("## "):
             close_paragraph()
             close_list()
-            chunks.append(f"<h2>{html.escape(line[3:].strip())}</h2>")
+            chunks.append(f"<h2>{escape_and_format(line[3:].strip())}</h2>")
             continue
         if line.startswith("# "):
             close_paragraph()
             close_list()
-            chunks.append(f"<h1>{html.escape(line[2:].strip())}</h1>")
+            chunks.append(f"<h1>{escape_and_format(line[2:].strip())}</h1>")
             continue
         if line.startswith("- "):
             close_paragraph()
             if not in_list:
                 chunks.append("<ul>")
                 in_list = True
-            escaped = html.escape(line[2:].strip())
-            chunks.append(f"<li>{format_inline(escaped)}</li>")
+            chunks.append(f"<li>{escape_and_format(line[2:].strip())}</li>")
             continue
         paragraph_buffer.append(line)
 
