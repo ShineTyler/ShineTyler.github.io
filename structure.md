@@ -33,8 +33,12 @@ project-root/
 │   │   └── tailwind.css        # Tailwind 入口文件
 │   │
 │   ├── scripts/
-│   │   ├── main.js
+│   │   ├── build_site.py      # 兼容入口（npm run build 调用）
+│   │   ├── sitebuild/         # 构建包：build/config/data/markdown/render
+│   │   ├── main.js            # 旧参考文件（部署版为 src/assets/site.js）
 │   │   └── lang-switch.js
+│   │
+│   ├── vendor/                # 内嵌依赖（markdown 库，含 LICENSE）
 │   │
 │   ├── pages/
 │   │   ├── index.html

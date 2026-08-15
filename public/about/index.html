@@ -5,41 +5,65 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>About | Tyler</title>
   <meta name="description" content="About">
+  <link rel="canonical" href="https://shinetyler.github.io/about/">
+  
+  <meta property="og:site_name" content="Tyler&#x27;s Corner">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="About | Tyler">
+  <meta property="og:description" content="About">
+  <meta property="og:url" content="https://shinetyler.github.io/about/">
+  <meta property="og:image" content="https://shinetyler.github.io/assets/images/og/og-cover.png">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="About | Tyler">
+  <meta name="twitter:description" content="About">
+  <meta name="twitter:image" content="https://shinetyler.github.io/assets/images/og/og-cover.png">
   <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="../assets/fonts/Megrim-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="../assets/fonts/playfair-display-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/ibm-plex-mono-w400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../assets/styles.css">
-  <link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
-  <script defer src="../assets/vendor/katex/katex.min.js"></script>
-  <script defer src="../assets/vendor/katex/auto-render.min.js"></script>
   <script defer src="../assets/site.js"></script>
 </head>
-<body>
+<body class="magazine">
 
   <div class="site-shell page-shell">
     
-    <header class="site-header">
-      <a class="brand" href="../">
-        <span class="brand-wordmark">Tyler&apos;s Corner</span>
-      </a>
-      <nav class="site-nav" aria-label="Primary">
-        <a href="../">Home</a>
-        <a class="current" href="../about/">About</a>
-        <a href="../projects/">Projects</a>
-        <a href="../blog/">Blog</a>
+    <header class="site-header masthead">
+      <div class="masthead-row">
+        <a class="brand" href="../">
+          <span class="brand-wordmark">Tyler&apos;s Corner</span>
+        </a>
+      </div>
+      <nav class="site-nav toc-nav" aria-label="Primary">
+        <a href="../"><span class="toc-no">01</span><span class="toc-label">Home</span></a>
+        <a class="current" href="../about/"><span class="toc-no">02</span><span class="toc-label">About</span></a>
+        <a href="../projects/"><span class="toc-no">03</span><span class="toc-label">Projects</span></a>
+        <a href="../blog/"><span class="toc-no">04</span><span class="toc-label">Blog</span></a>
       </nav>
     </header>
     <main>
-      <section class="section" style="padding-top: 52px;">
-        <div class="about-prose">
-          <p>I&#x27;m Tyler, a novice striving to become an engineer. This website is used to record my projects, notes and thoughts, and also to witness my gradual progress towards becoming an excellent engineer.</p>
-          <p>This website is used to quietly record the content I am learning and building, as well as those small steps that gradually transform curiosity into engineering capabilities.</p>
+      <section class="section page-hero" data-reveal>
+        <p class="eyebrow">Profile</p>
+        <h1 class="page-title">About</h1>
+        <p class="page-intro">A short note on what I am learning, building, and gradually growing into.</p>
+      </section>
+      <section class="section" data-reveal>
+        <div class="about-layout">
+          <figure class="about-figure">
+            <div class="portrait"></div>
+            <figcaption class="portrait-caption">Fig. 01 — The editor at work.</figcaption>
+          </figure>
+          <div class="about-prose">
+            <p>I&#x27;m Tyler, an aspiring engineer. This site is where I record projects, notes and thoughts — and where small steps slowly become visible.</p>
+            <p>Mostly engineering notes, small experiments, and honest records of things not yet finished.</p>
+          </div>
         </div>
       </section>
     </main>
     
-    <footer class="site-footer" id="contact">
-      <div class="footer-row footer-row-centered"><span class="footer-title">Building, learning and growing.</span></div>
-      <div class="footer-row footer-row-centered"><span>&copy; <span data-year></span> Tyler</span></div>
+    <footer class="site-footer colophon" id="contact">
+      <div class="footer-row footer-row-centered"><span>&copy; <span data-year></span> Tyler · liximu@foxmail.com</span></div>
     </footer>
   </div>
 

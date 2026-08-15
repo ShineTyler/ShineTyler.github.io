@@ -1,69 +1,177 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>信号的采样和重建 | Tyler</title>
   <meta name="description" content="奈奎斯特-香农采样定理的推导与信号重建 —— 从冲激串采样到 sinc 插值重建的完整数学过程。">
+  <link rel="canonical" href="https://shinetyler.github.io/zh-CN/blog/signal-sampling-reconstruction/">
+  
+  <meta property="og:site_name" content="Tyler&#x27;s Corner">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="信号的采样和重建 | Tyler">
+  <meta property="og:description" content="奈奎斯特-香农采样定理的推导与信号重建 —— 从冲激串采样到 sinc 插值重建的完整数学过程。">
+  <meta property="og:url" content="https://shinetyler.github.io/zh-CN/blog/signal-sampling-reconstruction/">
+  <meta property="og:image" content="https://shinetyler.github.io/assets/images/og/og-cover.png">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="信号的采样和重建 | Tyler">
+  <meta name="twitter:description" content="奈奎斯特-香农采样定理的推导与信号重建 —— 从冲激串采样到 sinc 插值重建的完整数学过程。">
+  <meta name="twitter:image" content="https://shinetyler.github.io/assets/images/og/og-cover.png">
   <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="../../assets/fonts/Megrim-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="../../assets/fonts/playfair-display-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../../assets/fonts/ibm-plex-mono-w400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../../assets/styles.css">
+
   <link rel="stylesheet" href="../../assets/vendor/katex/katex.min.css">
   <script defer src="../../assets/vendor/katex/katex.min.js"></script>
-  <script defer src="../../assets/vendor/katex/auto-render.min.js"></script>
-  <script defer src="../../assets/site.js"></script>
+  <script defer src="../../assets/vendor/katex/auto-render.min.js"></script>  <script defer src="../../assets/site.js"></script>
 </head>
-<body>
+<body class="magazine">
 
-  <article class="article-shell" data-reveal>
-    <header>
-      <div class="article-topbar">
-        <a class="article-back" href="../">&larr; Back to blog</a>
+  <div class="site-shell page-shell">
+    
+    <header class="site-header masthead">
+      <div class="masthead-row">
+        <a class="brand" href="../../">
+          <span class="brand-wordmark">Tyler&apos;s Corner</span>
+        </a>
       </div>
-      <div class="meta-row"><span class="meta-pill">2026-07-08</span></div>
-      <h1>信号的采样和重建</h1>
-      <p class="page-intro">奈奎斯特-香农采样定理的推导与信号重建 —— 从冲激串采样到 sinc 插值重建的完整数学过程。</p>
+      <nav class="site-nav toc-nav" aria-label="主导航">
+        <a href="../../"><span class="toc-no">01</span><span class="toc-label">首页</span></a>
+        <a href="../../about/"><span class="toc-no">02</span><span class="toc-label">关于</span></a>
+        <a href="../../projects/"><span class="toc-no">03</span><span class="toc-label">项目</span></a>
+        <a class="current" href="../../blog/"><span class="toc-no">04</span><span class="toc-label">博客</span></a>
+      </nav>
     </header>
-    <p>自然界信号多是连续时间信号，按照直观的思路，如果我们想要控制一个被控对象，我们直接把控制信号发给控制器执行就好了，但我们要思考一个问题：我们的存储介质能否存储这个控制信号？答案显然是否定的，因为一个连续信号代表存储介质需要存储无限的信号值，那究竟什么条件下可以无失真地重建连续信号呢？奈奎斯特-香农采样定理给出了回答。</p>
-    <h2>一、采样定理与信号的重建</h2>
-    <p>若一个带限连续信号 $x(t)\leftrightarrow X(j\omega)$ ，假设截止频率 $\omega_{0}$，对 $\forall \omega_{0}\in[-\omega_{0},\omega_{0}],X(j\omega)\not=0$，那么该信号能被其采样信号 $x(nT)$完全定义，当且仅当采样频率$\omega_{s}$与$\omega_{0}$满足：</p>
-    <p>$$ \omega_{s}\gt2\omega_{0} \tag{1.1} $$</p>
-    <p>### 1.1 采样定理的推导</p>
-    <p>既然对于一个连续信号，其采样的样本足够密就可以重建，那连续信号 $x_{c}(t)$如何进行表示？如何均匀地取到其样本值？我们可以利用冲激串函数 $p(t)$的采样性质获取连续信号$x_{c}(t)$间隔均匀的样本值，且采样频率为 $\omega_{s} = 2\pi /T$，$T$为采样周期，其中冲激串函数定义为：</p>
-    <p>$$ p(t) = {\displaystyle\sum_{n=-\infty}^{+\infty}} {\delta(t-nT)}\tag{1.2} $$</p>
-    <p>则采样后的加权冲激串:</p>
-    <p>$$ \begin{align} x_{p}(t) &={x_{c}(t)p(t)} {\tag{1.3.1}}   \\ &={{\displaystyle\sum_{n=-\infty}^{+\infty}} {x_{c}(nT)}{\delta(t-nT)} \tag{1.3.2}} \end{align} $$</p>
-    <p>为了方便时频域的分析，我们利用周期函数可表示成傅里叶级数形式将 $p(t)$用傅里叶级数来表示，用傅里叶级数系数计算公式易得 $a_{k} = \frac{1}{T}$，同时易得对应频域公式。</p>
-    <p>$$ \begin{aligned} p(t) &= {\displaystyle\sum_{k=-\infty}^{+\infty}} {a_k e^{jk\omega_{s}t}} =\frac{1}{T}{\displaystyle\sum_{k=-\infty}^{+\infty}} {e^{jk\omega_{s}t}} \tag{1.4} \end{aligned} $$</p>
-    <p>$$ \begin{aligned} p(t) \leftrightarrow {\frac{2\pi}{T} \displaystyle\sum_{n=-\infty}^{+\infty}}{\delta({\omega -k{\omega_{s}}})} \tag{1.5} \end{aligned} $$</p>
-    <p>由相乘的傅里叶变换性质，可得冲激采样函数的傅里叶变换为：</p>
-    <p>$$ \begin{align} X_{p}(j\omega) &=\frac{1}{2\pi}X_{c}(j\omega)*P(j\omega){\tag{1.6.1}} \\ &=\frac{1}{T}{\displaystyle\sum_{k=-\infty}^{+\infty}}{X_{c}(j (\omega - k\omega_{s}))} {\tag{1.6.2}} \end{align} $$</p>
-    <p>为了使用 $x_{c}(t)$样本值来表示 $x_{p}(t)$的连续时间傅里叶变换，我们对 $(1.3.2)$式直接取傅里叶变换可得：</p>
-    <p>$$ X_{p}(j\omega) = {\displaystyle\sum_{n=-\infty}^{+\infty}} {x_{c}(nT)}{e^{j\omega_{s}nT}} {\tag{1.7}} $$</p>
-    <p>如前述所说连续函数在理想的冲激串采样后得到的 $x_{p}(t)$仍为一个冲激串，我们可以用一个离散时间序列 $x_{d}[n]$来表示与 $x_{c}(t)$的关系：</p>
-    <p>$$ x_{d}[n] = x_{c}(nT) {\tag{1.8}} $$</p>
-    <p>对 $x_{d}[n]$取离散时间傅里叶变换可得：</p>
-    <p>$$ X_{d}(e^{j\Omega}) = {\displaystyle\sum_{n=-\infty}^{+\infty}}{x_{d}[n]e^{j\Omega n}} {\tag{1.9}} $$</p>
-    <p>对比 $(1.8)$和$(1.9)$式我们可以得到 $X_{d}(e^{j\Omega})$和 $X_{p}({j\omega})$有如下关系：</p>
-    <p>$$ \begin{align} X_{d}(e^{j\Omega}) &= X_{p}(j\frac{\Omega}{T}) {\tag{1.10.1}} \\ &={\frac{1}{T}}{\displaystyle\sum_{k=-\infty}^{+\infty}}{X_{c}(j{\frac{\Omega-2\pi k}{T}})} {\tag{1.10.2}} \end{align} $$</p>
-    <p>$(1.10.1)$和$(1.10.2)$两式说明 $X_{p}(j\omega)$其实就为连续信号的进行离散采样序列的离散时间傅里叶变换，或者说 $X_{d}(e^{j\Omega})$就是$X_{p}(j\omega)$的重复，只是在频率坐标轴上有一个尺度变换。并且由式$(1.6.2)$可以看出，$X_{p}(j\omega)$为一个周期为 $\omega_{s}$的周期信号，那么可对其用傅里叶级数形式表示，表示为：</p>
-    <p>$$ \begin{align} &X_{p}(j\omega) = {\displaystyle\sum_{k=-\infty}^{+\infty}}{c_{k}e^{-jkT\omega}} {\tag{1.11.1}} \\ &c_{k} ={\frac{1}{\omega_s}} {\int_{-\frac{\omega_s}{2}}^{\frac{\omega_s}{2}}}{X_p(j\omega)e^{-jkT\omega}}d{\omega}{\tag{1.11.2}} \end{align} $$</p>
-    <p>要指出的是，对照时域的傅里叶级数形式，时域变量t转到频域用$\omega$代替，$X_{p}(j\omega)$的周期为 $\omega_{s}$，那么式$(1.11.2)$种对应的基波角频率为冲激串$p(t)$的采样周期，即：</p>
-    <p>$$ \omega_{0p} = \frac{2\pi}{\omega_s}=T $$</p>
-    <p>前述已知 $\forall\omega \in$ $[-\omega_0,\omega_0]$内$X_c(j\omega)=0$,且 $\frac{\omega_s}{2} \gt {\omega_{0}}$，由$(1.10.1)$和$(1.10.2)$，我们可以得到连续时间信号的傅里叶变换$X_c(j\omega)$与$X_p(j\omega)$有如下关系：</p>
-    <p>$$ X_c(j\omega) = = \begin{cases} TX_{p}(j\omega) &\text{if } {\lvert\omega\rvert \le \frac{\omega_s}{2}}  \\ 0 &\text{if } {\lvert\omega\rvert \gt \frac{\omega_s}{2}} {\tag{1.12}} \end{cases} $$</p>
-    <p>式$(1.12)$带入式$(1.11.2)$可得：</p>
-    <p>$$ \begin{align} c_{k} &={\frac{1}{2\pi}} {\int_{-\frac{\omega_s}{2}}^{\frac{\omega_s}{2}}}{X_c(j\omega)e^{-jkT\omega}}d{\omega}{\tag{1.11.2*}} \\ &=x_c(-kT)\overset{n=-k}{=}x_c(nT) {\tag{1.13}} \end{align} $$</p>
-    <p>式$(1.11.1)$与式$(1.13)$表明 $x(nT)$即连续时间信号的采样值完全定义了$X_p(j\omega)$，又由于 $\forall\omega \in$ $[-\omega_0,\omega_0]$内$X_c(j\omega)=0$,且 $\frac{\omega_s}{2} \gt {\omega_{0}}$，那么根据式$(1.12)$可得，$X_p(j\omega)$本身则可以完全描述$X_c(j\omega)$。</p>
-    <p>### 1.2 信号的重建</p>
-    <p>由$1.1$部分可知采样后的冲激函数$X_p(j\omega)$完全定义了连续时间函数的傅里叶变换$X_c(j\omega)$，那么根据逆傅里叶变换公式，代入式$(1.12)$可得：</p>
-    <p>$$ \begin{aligned} x_c(t) &= {\frac{T}{2\pi}} {\int_{-\frac{\omega_s}{2}}^{\frac{\omega_s}{2}}}{X_p(j\omega)e^{j\omega t}}d{\omega} \\ &={\frac{T}{2\pi}} {\int_{-\frac{\omega_s}{2}}^{\frac{\omega_s}{2}}} {\displaystyle\sum_{k=-\infty}^{+\infty}} {x_c(kT)e^{-jk\omega T}e^{j\omega t}}d{\omega} {\tag{2.1.1}} \end{aligned} $$</p>
-    <p>对式子$(2.1.1)$做如下处理：</p>
-    <p>$$ \begin{aligned} \int_{-{\frac{\omega_s}{2}}} ^ {{\frac{\omega_s}{2}}} e^{j(t-kT)\omega} d\omega = \int_{-{\frac{\omega_s}{2}}} ^ {{\frac{\omega_s}{2}}} \cos[(t-kT)\omega] +j\sin[(t-kT)\omega]d\omega {\tag{2.1.2}} \end{aligned} $$</p>
-    <p>$(2.1.2)$代入$(2.1.1)$后计算化简后易得：</p>
-    <p>$$ \begin{aligned} x_c(t) &= {\displaystyle\sum_{k=-\infty}^{+\infty}} x_c(kT) \frac{\sin[\frac{(t-kT)\omega_s}{2}]}{\frac{(t-kT)\omega_s}{2}} \\ &={\displaystyle\sum_{k=-\infty}^{+\infty}} x_c(kT) sinc(\frac{(t-kT)\omega_s}{2}) \end{aligned} {\tag{2.2}} $$</p>
-    <p>式$(2.2)$即表示通过采样定理获得有限的连续信号的采样值即可对连续信号信号进行重建，其中 $x_c(kT) = x_c(nT)$，重建过程中，对一固定$k_0$，产生一个信号 $x_c(kT) sinc(\frac{(t-k_0T)\omega_s}{2})$，那么在K个这样信号的在$k$处叠加后获得密度足够的序列的连线即为重建出来的信号。</p>
-  </article>
+    <main>
+      <article class="article-shell" data-reveal>
+        <header class="article-head">
+          <div class="article-topbar">
+            <a class="article-back" href="../">&larr; 返回博客</a>
+          </div>
+          <div class="meta-row"><span class="meta-pill">2026-07-08</span></div>
+          <h1 class="article-title">信号的采样和重建</h1>
+          <p class="page-intro article-standfirst">奈奎斯特-香农采样定理的推导与信号重建 —— 从冲激串采样到 sinc 插值重建的完整数学过程。</p>
+        </header>
+        <div class="article-body">
+          <p>自然界信号多是连续时间信号，按照直观的思路，如果我们想要控制一个被控对象，我们直接把控制信号发给控制器执行就好了，但我们要思考一个问题：我们的存储介质能否存储这个控制信号？答案显然是否定的，因为一个连续信号代表存储介质需要存储无限的信号值，那究竟什么条件下可以无失真地重建连续信号呢？奈奎斯特-香农采样定理给出了回答。</p>
+<h2>一、采样定理与信号的重建</h2>
+<p>若一个带限连续信号 $x(t)\leftrightarrow X(j\omega)$ ，假设截止频率 $\omega_{0}$，对 $\forall \omega_{0}\in[-\omega_{0},\omega_{0}],X(j\omega)\not=0$，那么该信号能被其采样信号 $x(nT)$完全定义，当且仅当采样频率$\omega_{s}$与$\omega_{0}$满足：</p>
+<p>$$
+\omega_{s}\gt2\omega_{0} \tag{1.1}
+$$</p>
+<h3>1.1 采样定理的推导</h3>
+<p>既然对于一个连续信号，其采样的样本足够密就可以重建，那连续信号 $x_{c}(t)$如何进行表示？如何均匀地取到其样本值？我们可以利用冲激串函数 $p(t)$的采样性质获取连续信号$x_{c}(t)$间隔均匀的样本值，且采样频率为 $\omega_{s} = 2\pi /T$，$T$为采样周期，其中冲激串函数定义为：</p>
+<p>$$
+p(t) = {\displaystyle\sum_{n=-\infty}^{+\infty}} {\delta(t-nT)}\tag{1.2} 
+$$</p>
+<p>则采样后的加权冲激串:</p>
+<p>$$
+\begin{align} 
+x_{p}(t) &={x_{c}(t)p(t)} {\tag{1.3.1}}   \\
+		 &={{\displaystyle\sum_{n=-\infty}^{+\infty}} {x_{c}(nT)}{\delta(t-nT)} \tag{1.3.2}}
+\end{align}
+$$</p>
+<p>为了方便时频域的分析，我们利用周期函数可表示成傅里叶级数形式将 $p(t)$用傅里叶级数来表示，用傅里叶级数系数计算公式易得 $a_{k} = \frac{1}{T}$，同时易得对应频域公式。</p>
+<p>$$
+\begin{aligned}
+p(t) &= {\displaystyle\sum_{k=-\infty}^{+\infty}} {a_k e^{jk\omega_{s}t}} =\frac{1}{T}{\displaystyle\sum_{k=-\infty}^{+\infty}} {e^{jk\omega_{s}t}} \tag{1.4}
+\end{aligned} 
+$$</p>
+<p>$$
+\begin{aligned}
+p(t) \leftrightarrow {\frac{2\pi}{T} \displaystyle\sum_{n=-\infty}^{+\infty}}{\delta({\omega -k{\omega_{s}}})} \tag{1.5}
+\end{aligned}
+$$</p>
+<p>由相乘的傅里叶变换性质，可得冲激采样函数的傅里叶变换为：</p>
+<p>$$
+\begin{align}
+X_{p}(j\omega) &=\frac{1}{2\pi}X_{c}(j\omega)*P(j\omega){\tag{1.6.1}} \\
+		 &=\frac{1}{T}{\displaystyle\sum_{k=-\infty}^{+\infty}}{X_{c}(j (\omega - k\omega_{s}))} {\tag{1.6.2}}
+\end{align}
+$$</p>
+<p>为了使用 $x_{c}(t)$样本值来表示 $x_{p}(t)$的连续时间傅里叶变换，我们对 $(1.3.2)$式直接取傅里叶变换可得：</p>
+<p>$$
+X_{p}(j\omega) = {\displaystyle\sum_{n=-\infty}^{+\infty}} {x_{c}(nT)}{e^{j\omega_{s}nT}} {\tag{1.7}}
+$$</p>
+<p>如前述所说连续函数在理想的冲激串采样后得到的 $x_{p}(t)$仍为一个冲激串，我们可以用一个离散时间序列 $x_{d}[n]$来表示与 $x_{c}(t)$的关系：</p>
+<p>$$
+x_{d}[n] = x_{c}(nT) {\tag{1.8}}
+$$</p>
+<p>对 $x_{d}[n]$取离散时间傅里叶变换可得：</p>
+<p>$$
+X_{d}(e^{j\Omega}) = {\displaystyle\sum_{n=-\infty}^{+\infty}}{x_{d}[n]e^{j\Omega n}} {\tag{1.9}}
+$$</p>
+<p>对比 $(1.8)$和$(1.9)$式我们可以得到 $X_{d}(e^{j\Omega})$和 $X_{p}({j\omega})$有如下关系：</p>
+<p>$$
+\begin{align}
+X_{d}(e^{j\Omega}) &= X_{p}(j\frac{\Omega}{T}) {\tag{1.10.1}} \\
+			   &={\frac{1}{T}}{\displaystyle\sum_{k=-\infty}^{+\infty}}{X_{c}(j{\frac{\Omega-2\pi k}{T}})} {\tag{1.10.2}}
+\end{align}
+$$</p>
+<p>$(1.10.1)$和$(1.10.2)$两式说明 $X_{p}(j\omega)$其实就为连续信号的进行离散采样序列的离散时间傅里叶变换，或者说 $X_{d}(e^{j\Omega})$就是$X_{p}(j\omega)$的重复，只是在频率坐标轴上有一个尺度变换。并且由式$(1.6.2)$可以看出，$X_{p}(j\omega)$为一个周期为 $\omega_{s}$的周期信号，那么可对其用傅里叶级数形式表示，表示为：</p>
+<p>$$
+\begin{align}
+&X_{p}(j\omega) = {\displaystyle\sum_{k=-\infty}^{+\infty}}{c_{k}e^{-jkT\omega}} {\tag{1.11.1}} \\
+&c_{k} ={\frac{1}{\omega_s}} {\int_{-\frac{\omega_s}{2}}^{\frac{\omega_s}{2}}}{X_p(j\omega)e^{-jkT\omega}}d{\omega}{\tag{1.11.2}}
+\end{align}
+$$</p>
+<p>要指出的是，对照时域的傅里叶级数形式，时域变量t转到频域用$\omega$代替，$X_{p}(j\omega)$的周期为 $\omega_{s}$，那么式$(1.11.2)$种对应的基波角频率为冲激串$p(t)$的采样周期，即：</p>
+<p>$$
+\omega_{0p} = \frac{2\pi}{\omega_s}=T
+$$</p>
+<p>前述已知 $\forall\omega \in$ $[-\omega_0,\omega_0]$内$X_c(j\omega)=0$,且 $\frac{\omega_s}{2} \gt {\omega_{0}}$，由$(1.10.1)$和$(1.10.2)$，我们可以得到连续时间信号的傅里叶变换$X_c(j\omega)$与$X_p(j\omega)$有如下关系：</p>
+<p>$$
+X_c(j\omega) = = \begin{cases}
+   TX_{p}(j\omega) &\text{if } {\lvert\omega\rvert \le \frac{\omega_s}{2}}  \\
+   0 &\text{if } {\lvert\omega\rvert \gt \frac{\omega_s}{2}} {\tag{1.12}}
+\end{cases}
+$$</p>
+<p>式$(1.12)$带入式$(1.11.2)$可得：</p>
+<p>$$
+\begin{align}
+c_{k} &={\frac{1}{2\pi}} {\int_{-\frac{\omega_s}{2}}^{\frac{\omega_s}{2}}}{X_c(j\omega)e^{-jkT\omega}}d{\omega}{\tag{1.11.2*}} \\
+&=x_c(-kT)\overset{n=-k}{=}x_c(nT) {\tag{1.13}}
+\end{align}
+$$</p>
+<p>式$(1.11.1)$与式$(1.13)$表明 $x(nT)$即连续时间信号的采样值完全定义了$X_p(j\omega)$，又由于 $\forall\omega \in$ $[-\omega_0,\omega_0]$内$X_c(j\omega)=0$,且 $\frac{\omega_s}{2} \gt {\omega_{0}}$，那么根据式$(1.12)$可得，$X_p(j\omega)$本身则可以完全描述$X_c(j\omega)$。</p>
+<h3>1.2 信号的重建</h3>
+<p>由$1.1$部分可知采样后的冲激函数$X_p(j\omega)$完全定义了连续时间函数的傅里叶变换$X_c(j\omega)$，那么根据逆傅里叶变换公式，代入式$(1.12)$可得：</p>
+<p>$$
+\begin{aligned}
+x_c(t) &= {\frac{T}{2\pi}} {\int_{-\frac{\omega_s}{2}}^{\frac{\omega_s}{2}}}{X_p(j\omega)e^{j\omega t}}d{\omega} \\
+       &={\frac{T}{2\pi}} {\int_{-\frac{\omega_s}{2}}^{\frac{\omega_s}{2}}} {\displaystyle\sum_{k=-\infty}^{+\infty}} {x_c(kT)e^{-jk\omega T}e^{j\omega t}}d{\omega} {\tag{2.1.1}}
+\end{aligned}
+$$</p>
+<p>对式子$(2.1.1)$做如下处理：</p>
+<p>$$
+\begin{aligned}
+\int_{-{\frac{\omega_s}{2}}} ^ {{\frac{\omega_s}{2}}} e^{j(t-kT)\omega} d\omega = \int_{-{\frac{\omega_s}{2}}} ^ {{\frac{\omega_s}{2}}} \cos[(t-kT)\omega] +j\sin[(t-kT)\omega]d\omega {\tag{2.1.2}}
+\end{aligned}
+$$</p>
+<p>$(2.1.2)$代入$(2.1.1)$后计算化简后易得：</p>
+<p>$$
+\begin{aligned}
+x_c(t) &= {\displaystyle\sum_{k=-\infty}^{+\infty}} x_c(kT) \frac{\sin[\frac{(t-kT)\omega_s}{2}]}{\frac{(t-kT)\omega_s}{2}} \\
+		&={\displaystyle\sum_{k=-\infty}^{+\infty}} x_c(kT) sinc(\frac{(t-kT)\omega_s}{2})
+\end{aligned} {\tag{2.2}}
+$$</p>
+<p>式$(2.2)$即表示通过采样定理获得有限的连续信号的采样值即可对连续信号信号进行重建，其中 $x_c(kT) = x_c(nT)$，重建过程中，对一固定$k_0$，产生一个信号 $x_c(kT) sinc(\frac{(t-k_0T)\omega_s}{2})$，那么在K个这样信号的在$k$处叠加后获得密度足够的序列的连线即为重建出来的信号。</p>
+        </div>
+        
+        <nav class="article-pager" aria-label="主导航">
+          <span class="pager-empty"></span>
+          <a class="pager-next" href="../start-here/" title="What this site is for as a student">下一篇文章 &rarr;</a>
+        </nav>
+      </article>
+    </main>
+    
+    <footer class="site-footer colophon" id="contact">
+      <div class="footer-row footer-row-centered"><span>&copy; <span data-year></span> Tyler · liximu@foxmail.com</span></div>
+    </footer>
+  </div>
 
 </body>
 </html>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Tyler&#x27;s Corner</title>
+    <link>https://shinetyler.github.io/</link>
+    <description>On the journey to becoming an excellent engineer</description>
+    <language>en</language>
+    <item>
+      <title>信号的采样和重建</title>
+      <link>https://shinetyler.github.io/blog/signal-sampling-reconstruction/</link>
+      <guid isPermaLink="true">https://shinetyler.github.io/blog/signal-sampling-reconstruction/</guid>
+      <pubDate>Wed, 08 Jul 2026 00:00:00 +0000</pubDate>
+      <description>奈奎斯特-香农采样定理的推导与信号重建 —— 从冲激串采样到 sinc 插值重建的完整数学过程。</description>
+    </item>
+    <item>
+      <title>What this site is for as a student</title>
+      <link>https://shinetyler.github.io/blog/start-here/</link>
+      <guid isPermaLink="true">https://shinetyler.github.io/blog/start-here/</guid>
+      <pubDate>Wed, 01 Apr 2026 00:00:00 +0000</pubDate>
+      <description>The early version of a personal site is often more useful than people expect. You may not have internships, publications, or income yet. That is fine. A good site can still show taste, consistency, and initiative.</description>
+    </item>
+  </channel>
+</rss>

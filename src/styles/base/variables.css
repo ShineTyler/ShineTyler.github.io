@@ -31,4 +31,11 @@
   --radius-lg: 22px;
   --radius-md: 18px;
   --content: 1320px;
+  --ink: #2f261d;
+  --ink-soft: #6b5a41;
+  --ink-red: #a33b26;
+  --paper: #f0e7d3;
+  --paper-deep: #e7dcc2;
+  --font-display: "Playfair Display Web", "Playfair Display", "Young Serif Web", "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  --font-mono: "IBM Plex Mono Web", "IBM Plex Mono", "JetBrains Mono Web", "JetBrains Mono", "Cascadia Code", Consolas, monospace;
 }

@@ -1,0 +1,903 @@
+/* Source component entry for the 1990s print-magazine theme.
+   Compiled copy lives in src/assets/styles.css — keep both in sync. */
+
+1990s PRINT MAGAZINE EDITION
+   Scoped to body.magazine — the homepage keeps its original design.
+   Mirror kept in src/styles/components/magazine.css.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* Aged-paper ground: grain noise, foxing, darkened page gutters. */
+body.magazine {
+  overflow-x: hidden;
+  overflow-x: clip;
+  color: var(--ink);
+  background-color: var(--paper);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse at 10% 4%, rgba(122, 96, 60, 0.12), transparent 42%),
+    radial-gradient(ellipse at 90% 98%, rgba(96, 74, 44, 0.1), transparent 46%),
+    linear-gradient(90deg, rgba(122, 96, 60, 0.07), transparent 9%, transparent 91%, rgba(122, 96, 60, 0.07));
+  font-family: var(--font-mono);
+  font-size: 15.5px;
+}
+
+body.magazine .site-shell {
+  background: transparent;
+}
+
+/* Pin the colophon to the bottom edge of the viewport even when
+   the page content is short. */
+body.magazine .page-shell {
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+/* ── Masthead ── */
+body.magazine .site-header {
+  position: static;
+  display: block;
+  padding: 0 48px;
+  background: transparent;
+  border-bottom: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+body.magazine .masthead-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 26px 0 18px;
+}
+
+body.magazine .brand-wordmark {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.4vw, 2.7rem);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+}
+
+/* ── Table-of-contents navigation, numbered 01/02/03/04 ── */
+body.magazine .site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 32px;
+  padding: 12px 0 14px;
+  border-bottom: 3px double var(--ink);
+}
+
+body.magazine .site-nav a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 9px;
+  padding: 6px 2px;
+  border-radius: 0;
+  border-bottom: 2px solid transparent;
+  color: var(--ink);
+  background: transparent;
+  transition: color 200ms ease, border-color 200ms ease;
+}
+
+body.magazine .site-nav a:hover,
+body.magazine .site-nav a:focus-visible,
+body.magazine .site-nav a.current {
+  color: var(--ink);
+  background: transparent;
+  border-bottom-color: var(--ink-red);
+}
+
+body.magazine .toc-no {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-red);
+  transform-origin: bottom right;
+  transition: transform 240ms cubic-bezier(0.34, 1.56, 0.64, 1), color 200ms ease;
+}
+
+body.magazine .site-nav a:hover .toc-no,
+body.magazine .site-nav a:focus-visible .toc-no,
+body.magazine .site-nav a.current .toc-no {
+  transform: scale(1.55);
+}
+
+body.magazine .toc-label {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+/* ── Page hero title (kept fully inside the viewport) ── */
+body.magazine .page-hero {
+  padding: 72px 48px 52px;
+  border-bottom: 1px solid rgba(47, 38, 29, 0.28);
+}
+
+body.magazine .page-hero .eyebrow {
+  margin: 0 0 18px;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--ink-red);
+}
+
+body.magazine .page-hero .page-title {
+  font-family: var(--font-display);
+  font-size: clamp(3.2rem, 7.5vw, 6rem);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+
+body.magazine .page-hero .page-intro {
+  margin: 26px 0 0;
+  max-width: 58ch;
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  line-height: 1.9;
+  color: var(--ink-soft);
+}
+
+/* ── Uneven-column card grid (4/2 then 3/3 rhythm) ── */
+body.magazine .card-stack {
+  max-width: none;
+  margin: 0;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-top: 3px double var(--ink);
+}
+
+body.magazine .post-card,
+body.magazine .project-card {
+  grid-column: span 3;
+  gap: 18px;
+  padding: 36px 44px 46px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  position: relative;
+  transition: background 220ms ease;
+}
+
+/* Vertical divider between the two cards in each row */
+body.magazine .card-stack > :nth-child(odd):not(:last-child) {
+  border-right: 1px solid rgba(47, 38, 29, 0.16);
+}
+
+body.magazine .post-card:hover,
+body.magazine .project-card:hover {
+  background: rgba(47, 38, 29, 0.045);
+}
+
+body.magazine .card-meta {
+  display: grid;
+  gap: 8px;
+  justify-items: end;
+}
+
+body.magazine .card-no {
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: rgba(47, 38, 29, 0.42);
+}
+
+body.magazine .card-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--ink-red);
+}
+
+body.magazine .post-card h3,
+body.magazine .project-card h3 {
+  margin: 0;
+  max-width: 24ch;
+  font-family: var(--font-display);
+  font-size: clamp(1.55rem, 2.6vw, 2.2rem);
+  font-weight: 700;
+  line-height: 1.12;
+  color: var(--ink);
+}
+
+body.magazine .post-card p,
+body.magazine .project-card p {
+  max-width: 62ch;
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  line-height: 1.8;
+  color: var(--ink-soft);
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+body.magazine .card-link {
+  justify-self: start;
+  width: max-content;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border-bottom: 2px solid var(--ink-red);
+  padding-bottom: 3px;
+}
+
+body.magazine .card-link:hover { color: var(--ink-red); }
+
+/* ── Pills become print slugs ── */
+body.magazine .meta-pill,
+body.magazine .tag-pill {
+  min-height: 26px;
+  padding: 2px 9px;
+  border-radius: 0;
+  border: 1px solid rgba(47, 38, 29, 0.3);
+  background: transparent;
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ── Article pages ── */
+body.magazine .article-shell {
+  width: min(calc(100% - 96px), 880px);
+  min-height: 0;
+  margin: 44px auto 52px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+body.magazine .article-shell header.article-head {
+  margin-bottom: 36px;
+  padding-bottom: 30px;
+  border-bottom: 3px double var(--ink);
+}
+
+body.magazine .article-topbar {
+  justify-content: space-between;
+  margin-bottom: 22px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+body.magazine .article-back {
+  color: var(--ink);
+  font-weight: 600;
+  border-bottom: 2px solid var(--ink-red);
+  padding-bottom: 2px;
+}
+
+body.magazine .article-back:hover { color: var(--ink-red); }
+
+body.magazine .article-shell h1.article-title {
+  margin: 20px 0 22px;
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 7vw, 5.6rem);
+  font-weight: 800;
+  line-height: 0.94;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+
+body.magazine .article-shell .article-standfirst {
+  margin: 0;
+  max-width: 66ch;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  line-height: 1.85;
+  color: var(--ink-soft);
+  border-left: 3px solid var(--ink-red);
+  padding-left: 20px;
+}
+
+/* Two-column print body */
+body.magazine .article-body {
+  max-width: 74ch;
+  text-align: justify;
+  hyphens: auto;
+}
+
+body.magazine .article-body p {
+  margin: 0 0 1.25em;
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  line-height: 1.9;
+  color: var(--ink);
+}
+
+body.magazine .article-body h2 {
+  margin: 1.6em 0 0.8em;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  font-weight: 700;
+  color: var(--ink);
+  break-inside: avoid;
+  break-after: avoid;
+}
+
+body.magazine .article-body h3 {
+  margin: 1.5em 0 0.7em;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-red);
+  break-inside: avoid;
+  break-after: avoid;
+}
+
+body.magazine .article-body ul { margin: 0 0 1.2em; padding-left: 1.4em; }
+
+body.magazine .article-body li {
+  margin-bottom: 0.5em;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--ink);
+}
+
+body.magazine .article-body pre {
+  margin: 1.6em 0;
+  border-radius: 0;
+  border: 1px solid rgba(240, 231, 211, 0.16);
+  box-shadow: 8px 8px 0 rgba(47, 38, 29, 0.1);
+}
+
+body.magazine .article-body .katex-display {
+  break-inside: avoid;
+}
+
+/* Tables and blockquotes — new Markdown capabilities, print-styled */
+body.magazine .article-body table {
+  width: 100%;
+  margin: 1.6em 0;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  break-inside: avoid;
+}
+
+body.magazine .article-body th {
+  padding: 8px 12px 8px 0;
+  border-top: 3px double var(--ink);
+  border-bottom: 1px solid rgba(47, 38, 29, 0.5);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--ink);
+}
+
+body.magazine .article-body td {
+  padding: 7px 12px 7px 0;
+  border-bottom: 1px solid rgba(47, 38, 29, 0.2);
+  color: var(--ink);
+}
+
+body.magazine .article-body blockquote {
+  margin: 1.6em 0;
+  padding: 4px 0 4px 20px;
+  border-left: 3px solid var(--ink-red);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--ink-soft);
+  break-inside: avoid;
+}
+
+body.magazine .article-body blockquote p {
+  margin: 0 0 0.6em;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* Drop cap */
+body.magazine .article-body > p:first-of-type::first-letter {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 3.35em;
+  line-height: 0.78;
+  float: left;
+  padding: 0.08em 0.14em 0 0;
+  color: var(--ink);
+}
+
+/* ── Sepia photographs with film-grain noise ── */
+body.magazine .post-figure {
+  position: relative;
+  display: block;
+  margin: 1.8em 0;
+  line-height: 0;
+  break-inside: avoid;
+}
+
+body.magazine .post-image {
+  width: 100%;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: 8px 8px 0 rgba(47, 38, 29, 0.1);
+  filter: sepia(0.2) contrast(0.94) brightness(1.01);
+}
+
+body.magazine .post-figure::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+}
+
+/* ── About page: uneven two-column profile ── */
+body.magazine .about-prose {
+  max-width: none;
+  margin: 8px 0 0;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 64px;
+  align-items: start;
+}
+
+body.magazine .about-prose p {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  line-height: 1.95;
+  color: var(--ink);
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+body.magazine .about-prose p:first-child {
+  font-size: 1.06rem;
+  border-left: 3px solid var(--ink-red);
+  padding-left: 22px;
+}
+
+body.magazine .about-prose p:first-child::first-letter {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 3.2em;
+  float: left;
+  line-height: 0.8;
+  padding: 0.08em 0.14em 0 0;
+}
+
+/* ── Colophon footer with ISSN ── */
+body.magazine .site-footer {
+  display: grid;
+  gap: 6px;
+  padding: 22px 48px 30px;
+  border-top: 1px solid rgba(47, 38, 29, 0.32);
+}
+
+body.magazine .footer-row {
+  margin-bottom: 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
+}
+
+/* ── 404 ── */
+body.magazine .error-main {
+  display: grid;
+  place-items: center;
+  flex: 1;
+  padding: 70px 48px 110px;
+}
+
+body.magazine .error-shell {
+  width: min(100%, 900px);
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+body.magazine .error-shell .eyebrow {
+  font-family: var(--font-mono);
+  font-size: clamp(4rem, 14vw, 9rem);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: 0;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(47, 38, 29, 0.32);
+}
+
+body.magazine .error-shell .page-title {
+  margin-top: 30px;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+body.magazine .error-shell .page-intro {
+  max-width: 52ch;
+  margin-top: 14px;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+
+body.magazine .button {
+  border-radius: 0;
+  min-height: 46px;
+  padding: 0 22px;
+  border: 1.5px solid var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  transition: background 200ms ease, color 200ms ease, box-shadow 200ms ease;
+}
+
+body.magazine .button-primary {
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: 6px 6px 0 rgba(47, 38, 29, 0.18);
+}
+
+body.magazine .button-primary:hover {
+  background: var(--ink-red);
+  color: #f7f1e3;
+  box-shadow: 3px 3px 0 rgba(47, 38, 29, 0.18);
+}
+
+/* ── Page-turn transitions ──
+   The slide lives on .site-shell, never on <body>: a transformed body
+   becomes the containing block of the fixed intro overlay, which pushes
+   the PRESS START button off-screen. Fading opacity on body is safe. */
+body.magazine.is-page-in {
+  animation: magPageFadeIn 640ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+body.magazine.is-page-in .site-shell {
+  animation: magPageIn 640ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+body.magazine.is-page-in::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  background: linear-gradient(to left, rgba(47, 38, 29, 0.22), rgba(47, 38, 29, 0.06) 26%, transparent 52%);
+  animation: magSweepIn 640ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+body.magazine.is-turning-out {
+  animation: magPageFadeOut 480ms cubic-bezier(0.55, 0, 0.75, 0.35) both;
+}
+
+body.magazine.is-turning-out .site-shell {
+  animation: magPageOut 480ms cubic-bezier(0.55, 0, 0.75, 0.35) both;
+}
+
+body.magazine.is-turning-out::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  background: linear-gradient(to right, rgba(47, 38, 29, 0.16), transparent 44%);
+  animation: magShadowOut 480ms ease-in both;
+}
+
+@keyframes magPageFadeIn {
+  from { opacity: 0.4; }
+  to   { opacity: 1; }
+}
+
+@keyframes magPageFadeOut {
+  to { opacity: 0.55; }
+}
+
+@keyframes magPageIn {
+  from { opacity: 0.4; transform: translateX(9vw); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes magSweepIn {
+  from { transform: translateX(18%); opacity: 1; }
+  to   { transform: translateX(-120%); opacity: 0; }
+}
+
+@keyframes magPageOut {
+  to { opacity: 0.55; transform: translateX(-8vw); }
+}
+
+@keyframes magShadowOut {
+  from { opacity: 0; }
+  40%  { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+/* ── Magazine responsive ── */
+@media (max-width: 1100px) {
+  body.magazine .article-shell {
+    width: min(calc(100% - 56px), 880px);
+  }
+  body.magazine .about-prose {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+}
+
+@media (max-width: 720px) {
+  body.magazine .site-header { padding: 0 20px; }
+  body.magazine .masthead-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 22px 0 18px;
+  }
+  body.magazine .site-nav { justify-content: flex-start; gap: 6px 20px; }
+  body.magazine .section { padding: 0 20px 52px; }
+  body.magazine .page-hero { padding: 40px 20px 34px; }
+  body.magazine .page-hero .page-title,
+  body.magazine .article-shell h1.article-title {
+    font-size: clamp(2.6rem, 13vw, 3.6rem);
+  }
+  body.magazine .article-shell {
+    width: calc(100% - 32px);
+    margin: 8px auto 40px;
+  }
+  body.magazine .card-stack { grid-template-columns: 1fr; }
+  body.magazine .card-stack > * { border-right: none; }
+  body.magazine .post-card,
+  body.magazine .project-card {
+    padding: 24px 4px 30px;
+  }
+  body.magazine .site-footer { padding: 22px 20px 36px; }
+  body.magazine .error-main { padding: 50px 20px 90px; }
+  body.magazine .article-topbar {
+    flex-direction: column;
+    gap: 10px;
+  }
+  body.magazine .article-body pre {
+    box-shadow: 6px 6px 0 rgba(47, 38, 29, 0.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.magazine.is-page-in,
+  body.magazine.is-turning-out,
+  body.magazine.is-page-in .site-shell,
+  body.magazine.is-turning-out .site-shell {
+    animation: none;
+  }
+  body.magazine.is-page-in::before,
+  body.magazine.is-turning-out::after {
+    display: none;
+  }
+}
+
+/* ── Homepage: cover story ── */
+body.magazine .hero {
+  min-height: auto;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 64px 48px 80px;
+  border-bottom: 1px solid rgba(47, 38, 29, 0.28);
+}
+
+body.magazine .hero-header { margin-bottom: 56px; }
+
+body.magazine .hero .eyebrow {
+  margin: 0 0 20px;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--ink-red);
+}
+
+body.magazine .hero .hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 6vw, 4.8rem);
+  font-weight: 800;
+  font-style: normal;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  max-width: none;
+}
+
+body.magazine .hero-subline {
+  margin: 20px 0 0;
+  max-width: 66ch;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  line-height: 1.85;
+  color: var(--ink-soft);
+}
+
+body.magazine .hero-body {
+  display: block;
+}
+
+body.magazine .hero-about { gap: 20px; }
+
+body.magazine .hero-about p {
+  max-width: 70ch;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  line-height: 1.9;
+  color: var(--ink);
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+/* ── The editor's portrait: quiet print-plate on the profile page ── */
+body.magazine .about-figure .portrait {
+  width: 100%;
+  min-height: 0;
+  aspect-ratio: 3 / 4;
+  border-radius: 0;
+  border: 1px solid rgba(47, 38, 29, 0.4);
+  background:
+    url("./images/portrait/tyler-portrait-blench2.webp") center center / cover no-repeat;
+  filter: sepia(0.2) contrast(0.96) brightness(1.02);
+}
+
+body.magazine .portrait::before { display: none; }
+
+body.magazine .portrait::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+}
+
+body.magazine .portrait-caption {
+  margin: 14px 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+/* ── Homepage contents ledger ── */
+body.magazine .contents-ledger { padding-top: 52px; }
+
+body.magazine .contents-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 3px double var(--ink);
+}
+
+body.magazine .contents-head .eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--ink-red);
+}
+
+/* ── About page: profile spread with portrait plate ── */
+body.magazine .about-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) 1fr;
+  gap: 56px;
+  align-items: start;
+}
+
+body.magazine .about-figure {
+  margin: 0;
+  justify-self: start;
+}
+
+body.magazine .about-figure .portrait {
+  max-width: 300px;
+  box-shadow: 9px 9px 0 rgba(47, 38, 29, 0.11);
+}
+
+@media (max-width: 1100px) {
+  body.magazine .about-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  body.magazine .about-figure {
+    justify-self: center;
+    max-width: 280px;
+  }
+}
+
+@media (max-width: 720px) {
+  body.magazine .hero { padding: 36px 20px 44px; }
+  body.magazine .hero-header { margin-bottom: 34px; }
+}
+
+
+/* ── Prev/next article pager ── */
+body.magazine .article-pager {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 14px 24px;
+  margin-top: 44px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(47, 38, 29, 0.28);
+}
+
+body.magazine .article-pager a {
+  max-width: 46%;
+  padding-bottom: 3px;
+  border-bottom: 2px solid var(--ink-red);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+body.magazine .article-pager a:hover { color: var(--ink-red); }
+
+/* ── Empty states and the "view all" link ── */
+body.magazine .card-stack-empty {
+  padding: 40px 6px;
+  border-bottom: 1px solid rgba(47, 38, 29, 0.25);
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  color: var(--ink-soft);
+}
+
+body.magazine .contents-head .contents-vol {
+  padding-bottom: 2px;
+  border-bottom: 2px solid var(--ink-red);
+  text-decoration: none;
+}
+
+body.magazine .contents-head .contents-vol:hover { color: var(--ink-red); }

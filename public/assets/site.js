@@ -85,6 +85,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       }
 
+      /* Safety net: the overlay is one big "enter" target, so a click
+         anywhere on it (not just the button) dismisses it too. */
+      introOverlay.addEventListener("click", function () {
+        dismissIntro();
+      });
+
       introOverlay.addEventListener("keydown", function (event) {
         if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();
@@ -128,6 +134,62 @@ document.addEventListener("DOMContentLoaded", function () {
         ],
         throwOnError: false
       });
+    });
+  }
+
+  /* ── Magazine edition: page-turn transitions between internal pages ── */
+  var magazineRoot = document.body.classList.contains("magazine");
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (magazineRoot && !reduceMotion) {
+    document.body.classList.add("is-page-in");
+
+    document.addEventListener("click", function (event) {
+      if (event.defaultPrevented || event.button !== 0) {
+        return;
+      }
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+        return;
+      }
+      var target = event.target;
+      while (target && target !== document && !(target.tagName && target.tagName.toLowerCase() === "a")) {
+        target = target.parentNode;
+      }
+      if (!target || target.tagName.toLowerCase() !== "a") {
+        return;
+      }
+      var href = target.getAttribute("href") || "";
+      if (!href || href.charAt(0) === "#") {
+        return;
+      }
+      if (target.target && target.target !== "_self") {
+        return;
+      }
+      if (target.origin !== window.location.origin) {
+        return;
+      }
+      if (/\.(pdf|zip|png|jpe?g|webp|gif|svg|mp4|ico)([?#].*)?$/i.test(href)) {
+        return;
+      }
+      var destination = new URL(href, window.location.href).href;
+      if (destination === window.location.href) {
+        return;
+      }
+      event.preventDefault();
+      document.body.classList.add("is-turning-out");
+      window.setTimeout(function () {
+        window.location.href = destination;
+      }, 460);
+    });
+
+    window.addEventListener("pagehide", function () {
+      document.body.classList.remove("is-turning-out");
+    });
+
+    window.addEventListener("pageshow", function (event) {
+      if (event.persisted) {
+        document.body.classList.remove("is-turning-out");
+      }
     });
   }
 });

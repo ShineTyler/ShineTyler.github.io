@@ -1,0 +1,22 @@
+{
+  "hero": {
+    "title_lines": ["搭建、", "学习", "与成长。"],
+    "subtitle": "在成为一名优秀工程师的路上。",
+    "portrait_note": "我是 Tyler，一名努力成为工程师的新手。这个网站记录我的项目、笔记与想法——让那些小步子慢慢变得可见。"
+  },
+  "about": {
+    "section_title": "关于",
+    "section_copy": "关于我正在学习、搭建，以及慢慢长成的样子。",
+    "card_title": "关于",
+    "card_body": "大多是工程笔记、小实验，以及对未完成之事的诚实记录。"
+  },
+  "recent_writing": {
+    "section_title": "近期文章",
+    "section_copy": "短笔记、项目回顾与写作，慢慢构成这个博客。"
+  },
+  "footer": {
+    "description": "学生主页与博客。",
+    "built_with": "用纯 HTML、CSS 与 JavaScript 搭建。",
+    "closing": "搭建、学习与成长。"
+  }
+}
