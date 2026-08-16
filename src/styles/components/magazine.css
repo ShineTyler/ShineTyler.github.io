@@ -461,12 +461,12 @@ body.magazine .post-figure::after {
   opacity: 0.5;
 }
 
-/* ── About page: uneven two-column profile ── */
+/* ── About page: single-column profile prose ── */
 body.magazine .about-prose {
-  max-width: none;
+  max-width: 68ch;
   margin: 8px 0 0;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 64px;
+  grid-template-columns: 1fr;
+  gap: 36px;
   align-items: start;
 }
 
@@ -655,10 +655,6 @@ body.magazine.is-turning-out::after {
   body.magazine .article-shell {
     width: min(calc(100% - 56px), 880px);
   }
-  body.magazine .about-prose {
-    grid-template-columns: 1fr;
-    gap: 36px;
-  }
 }
 
 @media (max-width: 720px) {
@@ -716,7 +712,6 @@ body.magazine .hero {
   max-width: 1100px;
   margin: 0 auto;
   padding: 64px 48px 80px;
-  border-bottom: 1px solid rgba(47, 38, 29, 0.28);
 }
 
 body.magazine .hero-header { margin-bottom: 56px; }
@@ -815,6 +810,12 @@ body.magazine .contents-head {
   border-bottom: 3px double var(--ink);
 }
 
+/* The home ledger keeps a single double rule under its heading,
+   matching the masthead nav — drop the card-stack's own top line. */
+body.magazine .contents-ledger .card-stack {
+  border-top: none;
+}
+
 body.magazine .contents-head .eyebrow {
   font-family: var(--font-mono);
   font-size: 0.74rem;
@@ -827,9 +828,11 @@ body.magazine .contents-head .eyebrow {
 /* ── About page: profile spread with portrait plate ── */
 body.magazine .about-layout {
   display: grid;
-  grid-template-columns: minmax(220px, 300px) 1fr;
-  gap: 56px;
+  grid-template-columns: minmax(240px, 360px) 1fr;
+  gap: 64px;
   align-items: start;
+  /* Push the profile block right of the section edge for a balanced spread. */
+  margin-left: 64px;
 }
 
 body.magazine .about-figure {
@@ -838,18 +841,19 @@ body.magazine .about-figure {
 }
 
 body.magazine .about-figure .portrait {
-  max-width: 300px;
-  box-shadow: 9px 9px 0 rgba(47, 38, 29, 0.11);
+  max-width: 360px;
+  box-shadow: 10px 10px 0 rgba(47, 38, 29, 0.11);
 }
 
 @media (max-width: 1100px) {
   body.magazine .about-layout {
     grid-template-columns: 1fr;
     gap: 40px;
+    margin-left: 0;
   }
   body.magazine .about-figure {
     justify-self: center;
-    max-width: 280px;
+    max-width: 320px;
   }
 }
 
